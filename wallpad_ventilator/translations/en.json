@@ -1,0 +1,36 @@
+{
+  "title": "Wallpad Ventilator",
+  "description": "Input Cont,Vent IP address and port.",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Input Ventilator's IP address and port.",
+        "description": "Do you want to start set up?",
+        "data": {
+          "controller": "Controller's IP address.",
+          "ventilator": "Ventilator's IP address.",
+          "controller_port": "port of controller",
+          "ventilator_port": "port of ventilator"
+        }
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "Already configured. Only a single configuration possible.",
+      "no_devices_found": "No devices found on the network"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Wallpad Ventilator Host Edit.",
+        "description": "192.168.x.x",
+        "data": {
+          "controller": "Controller's IP address.",
+          "ventilator": "Ventilator's IP address.",
+          "controller_port": "port of controller",
+          "ventilator_port": "port of ventilator"
+        }
+      }
+    }
+  }
+}

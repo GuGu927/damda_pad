@@ -1,0 +1,36 @@
+{
+  "title": "Wallpad Ventilator",
+  "description": "Input Cont,Vent IP address and port.",
+  "config": {
+    "step": {
+      "user": {
+        "title": "[%key:common::config_flow::user::title%]",
+        "description": "[%key:common::config_flow::user::description%]",
+        "data": {
+          "controller": "[%key:common::config_flow::user::controller%]",
+          "ventilator": "[%key:common::config_flow::user::ventilator%]",
+          "controller_port": "[%key:common::config_flow::user::controller_port%]",
+          "ventilator_port": "[%key:common::config_flow::user::ventilator_port%]"
+        }
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "[%key:common::config_flow::abort::single_instance_allowed%]",
+      "no_devices_found": "[%key:common::config_flow::abort::no_devices_found%]"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Wallpad Ventilator Host Edit.",
+        "description": "192.168.x.x",
+        "data": {
+          "controller": "Controller's IP address.",
+          "ventilator": "Ventilator's IP address.",
+          "controller_port": "port of controller",
+          "ventilator_port": "port of ventilator"
+        }
+      }
+    }
+  }
+}
