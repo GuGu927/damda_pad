@@ -30,7 +30,7 @@ Wallpad CustomComponent for Wallpad RS485. \
 
 ## Component 기능
 | 월패드 | 자동인식 | 상태조회 | 조명 | 난방 | 콘센트 | E/V호출 | 가스차단 | 현관모션 |
-| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
 | 코콤 | O | O | O | O | O | O | O | O | O | O |
 
 [skorea_link]: https://cafe.naver.com/koreassistant
