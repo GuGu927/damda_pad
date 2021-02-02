@@ -1,5 +1,4 @@
-# Wallpad by Smarthome KoreAssistant [sKoreA][skorea_link]
-## Wallpad CustomComponent for Wallpad RS485
+# Wallpad CustomComponent for Wallpad RS485 by Smarthome KoreAssistant [sKoreA][skorea_link]
 
 한국의 아파트 홈넷 네트워크(RS485)를 연동하기 위한 CustomComponent
 
@@ -12,8 +11,12 @@
 - 본문의 내용을 참조할 시 출처를 명시해야합니다.
 - 이 외의 내용에 대해서는 제작자에게 문의바랍니다.
 
+<br>
+
 ## 현재 가능한 월패드(2021-02-02 기준)
 - 코콤
+
+<br>
 
 ## 지원 예정 월패드
 - 삼성SDS
@@ -21,6 +24,8 @@
 - CVNET
 - 자이
 - 현대통신
+
+<br>
 
 ## Component 기능
 | 월패드 | 자동인식 | 상태조회 | 조명 | 난방 | 콘센트 | E/V호출 | 가스차단 | 현관모션 |
