@@ -1,7 +1,10 @@
-# Wallpad by Smarthome KoreAssistant[sKoreA]
-=================
+# Wallpad by Smarthome KoreAssistant [sKoreA][skorea_link]
 ## Wallpad CustomComponent for Wallpad RS485
-<br>한국의 아파트 홈넷 네트워크(RS485)를 연동하기 위한 CustomComponent
+
+한국의 아파트 홈넷 네트워크(RS485)를 연동하기 위한 CustomComponent
+
+<br>
+
 ### 주의사항
 - 본 Component의 사용책임은 전적으로 사용자에게 있습니다.
 - 본 Component의 상업적 이용을 하용하지 않습니다.
@@ -24,4 +27,4 @@
 | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
 | 코콤 | O | O | O | O | O | O | O | O | O | O |
 
-[sKoreA]: https://cafe.naver.com/koreassistant
+[skorea_link]: https://cafe.naver.com/koreassistant
