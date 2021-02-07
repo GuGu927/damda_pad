@@ -1,4 +1,4 @@
-# Wallpad by sKoreA [Smarthome KoreAssistant][skorea_link]
+# Wallpad by SKA [Smarthome KoreAssistant][skorea_link]
 
 ![HACS][hacs-shield]
 ![Version v1.4][version-shield]
