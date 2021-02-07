@@ -55,5 +55,5 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 | 삼성SDS | O | O | O | O | O | X | X | X |
 
 [skorea_link]: https://cafe.naver.com/koreassistant
-[version-shield]: https://img.shields.io/badge/version-v1.2.1-orange.svg
+[version-shield]: https://img.shields.io/badge/version-v1.0.0-orange.svg
 [hacs-shield]: https://img.shields.io/badge/HACS-Custom-red.svg
