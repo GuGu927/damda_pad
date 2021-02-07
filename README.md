@@ -4,7 +4,7 @@
 ![Version v1.4][version-shield]
 
 Wallpad CustomComponent for Wallpad RS485.<br>
-한국의 아파트 홈넷 네트워크(RS485)를 연동하기 위한 CustomComponent.
+한국의 아파트 홈넷 네트워크(RS485)를 통합연동 및 호환을 위한 위한 CustomComponent.
 
 <br>
 
