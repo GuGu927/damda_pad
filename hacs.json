@@ -1,0 +1,6 @@
+{
+  "name": "[KR] 스코어 월패드",
+  "country": "KR",
+  "domains": ["sensor","binary_sensor","switch","light","climate","fan"],
+  "render_readme": true
+}
