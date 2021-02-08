@@ -62,19 +62,20 @@ class WallpadThermostat(WallpadDevice, ClimateEntity):
 
     @property
     def hvac_mode(self):
-        """Return hvac operation ie. heat, cool mode.
-
+        """Return hvac operation ie. heat, cool mode.\n
         Need to be one of HVAC_MODE_*.
         """
         status = self.get_status()
         if status is None: return HVAC_MODE_OFF
-        return HVAC_MODE_HEAT if status.get(
-            THERMO_MODE) == HVAC_MODE_HEAT else HVAC_MODE_OFF
+        return status.get(THERMO_MODE) if status.get(
+            THERMO_MODE) != PRESET_AWAY else HVAC_MODE_FAN_ONLY
 
     @property
     def hvac_modes(self) -> list:
         """Return the list of available hvac operation modes."""
-        mode = self.gateway.api.thermo_mode
+        mode = []
+        for key in self.gateway.api.thermo_mode.keys():
+            mode.append(key if key is not PRESET_AWAY else HVAC_MODE_FAN_ONLY)
         if mode is None:
             mode = [HVAC_MODE_HEAT, HVAC_MODE_OFF]
         return list(mode)

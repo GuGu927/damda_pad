@@ -20,10 +20,11 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 
 ## Version history
 
-| Version |    Date    | 내용            |
-| :-----: | :--------: | --------------- |
-|  v1.0   | 2021.02.07 | First version   |
-|  v1.1   | 2021.02.08 | Serial통신 추가 |
+| Version |    Date    | 내용                             |
+| :-----: | :--------: | -------------------------------- |
+|  v1.0   | 2021.02.07 | First version                    |
+|  v1.1   | 2021.02.08 | Serial통신 추가                  |
+|  v1.2   | 2021.02.09 | 난방 외출모드(송풍) 추가(적응형) |
 
 <br>
 
@@ -58,7 +59,7 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 
 ### 현재 가능한 월패드(최신버전 기준)
 
-- 코콤
+- 코콤(v1.1)
 
 <br>
 
@@ -82,8 +83,7 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 
 ## 오류발생 시 debug 정보 출력방법
 
-- `configuration.yaml` 에서 `logger` 항목을 수정<br>
-**configuration.yaml**
+- `**configuration.yaml**` 에서 `logger` 항목을 수정<br>
 
 ```yaml
 logger:

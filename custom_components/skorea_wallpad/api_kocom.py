@@ -24,7 +24,7 @@ THERMO_PTR = re.compile("(.)..(.)(..)..(..)......")
 FAN_PTR = re.compile("(..)..(.)...........")
 
 BRAND = "KOCOM"
-VERSION = "1.1-b2"
+VERSION = "1.1"
 SCAN_LIST = [WPD_LIGHT, WPD_SWITCH, WPD_THERMOSTAT, WPD_GAS]
 
 WPD_DEVICE = {
@@ -288,12 +288,14 @@ class Main:
         if device_id in self.fail: self.fail[device_id] = 0
 
         def add(did, sid, value):
+            """ Add device to entities """
             if did is None: return
             device_info = self.init_device(did, sid, False)
             if value == True or sid.isalpha():
                 self.async_add_device(add_device, device_info)
 
         def update(did, sid, old, new):
+            """ Update device state to entities """
             if did is None: return
             unique_id = f"{did}_{sid}"
             if (self.unique.get(unique_id) and old.get(sid) != new):
