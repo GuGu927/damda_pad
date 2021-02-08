@@ -470,9 +470,10 @@ class Main:
                     data={
                         **self.entry.data, mode: mode_packet
                     })
-            if mode == THERMO_AWAY:
+            if mode != THERMO_HEAT:
                 last = self.entry.data.get(device_id)
                 target = last if last else DEFAULT_TARGET
+                self.last_target = target
             state = {
                 THERMO_MODE: mode,
                 THERMO_TARGET: target,
