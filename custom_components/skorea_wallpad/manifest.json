@@ -1,0 +1,12 @@
+{
+  "domain": "skorea_wallpad",
+  "name": "SKA Wallpad",
+  "config_flow": true,
+  "documentation": "https://www.home-assistant.io/integrations/ska_wallpad",
+  "requirements": ["pyserial==3.5"],
+  "ssdp": [],
+  "zeroconf": [],
+  "homekit": {},
+  "dependencies": [],
+  "codeowners": ["@GuGu927"]
+}
