@@ -80,4 +80,16 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 | 코맥스  |    O     |    O     |  O   |  O   |   O    |    O    |    O     |    X     |
 | 삼성SDS |    O     |    O     |  O   |  O   |   O    |    X    |    X     |    X     |
 
+## 오류발생 시 debug 정보 출력방법
+
+- `configuration.yaml` 에서 `logger` 항목을 수정
+  **configuration.yaml**
+
+```yaml
+logger:
+  default: info
+  logs:
+    custom_components.skorea_wallpad: debug
+```
+
 [skorea_link]: https://cafe.naver.com/koreassistant
