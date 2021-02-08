@@ -33,7 +33,27 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 
 - HACS > Integretions > 우측상단 메뉴 > Custom repositories 선택
 - 'https://github.com/GuGu927/Wallpad' 주소 입력, Category에 'integration' 선택 후, 저장
-- HACS > Integretions 메뉴 선택 후, koreassistant 검색하여 설치
+- HACS > Integretions 메뉴 선택 후, 'SKA 월패드' 설치
+
+<br>
+
+### 통합구성요소
+
+- HA 사이드패널 > 설정 > 통합 구성요소 > 통합 구성요소 추가
+- 검색창에서 'ska wallpad' 입력 후 클릭
+- 소켓통신의 경우 IP 주소, 포트를 입력 후 확인
+- 씨리얼통신의 경우 씨리얼포트 주소 (ex: /dev/USB0) 입력 후 확인
+
+<br>
+
+### 월패드 별 설정방법
+
+- 코콤
+  -- 월패드에서 조회 혹은 조작하기
+  -- 가스차단, 난방 > 상태조회
+  -- 조명, 대기전력차단 > On/Off 제어
+  -- 엘레베이터 > 호출
+  -- 현관모션감지 > 현관 앞에서 움직임
 
 <br>
 
