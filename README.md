@@ -59,7 +59,7 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 
 ### 현재 가능한 월패드(최신버전 기준)
 
-- 코콤(v1.1)
+- 코콤(v1.2)
 
 <br>
 
