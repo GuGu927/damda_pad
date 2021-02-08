@@ -82,8 +82,8 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 
 ## 오류발생 시 debug 정보 출력방법
 
-- `configuration.yaml` 에서 `logger` 항목을 수정
-  **configuration.yaml**
+- `configuration.yaml` 에서 `logger` 항목을 수정<br>
+**configuration.yaml**
 
 ```yaml
 logger:
