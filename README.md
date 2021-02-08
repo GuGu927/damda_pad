@@ -1,7 +1,7 @@
 # Wallpad by SKA [SmartKoreAssistant][skorea_link]
 
-![HACS][hacs-shield]
-![Version v1.4][version-shield]
+![version](https://img.shields.io/badge/version-1.1-blue)
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 
 Wallpad CustomComponent for Wallpad RS485.<br>
 한국의 아파트 홈넷 네트워크(RS485)를 통합연동 및 호환을 위한 위한 CustomComponent.
@@ -62,5 +62,3 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 | 삼성SDS |    O     |    O     |  O   |  O   |   O    |    X    |    X     |    X     |
 
 [skorea_link]: https://cafe.naver.com/koreassistant
-[version-shield]: https://img.shields.io/badge/version-v1.0.0-orange.svg
-[hacs-shield]: https://img.shields.io/badge/HACS-Custom-red.svg
