@@ -499,9 +499,9 @@ class Main:
             "value": pmatch.group(8),
             "sum": pmatch.group(9)
         }
-        wpd, dst, src = "0100", p["dd"] + p["dr"], p["sd"] + p["sr"]
+        wpd, dst, src = ["0000", "0100"], p["dd"] + p["dr"], p["sd"] + p["sr"]
         cmd = CMD[p["cmd"]] if p["cmd"] in CMD else False
-        if p["pt"] == "d" and src == wpd:
+        if p["pt"] == "d" and src in wpd:
             device = WPD_DEVICE[p["dd"]] if p["dd"] in WPD_DEVICE else False
             room = p["dr"]
             value = None
@@ -519,7 +519,7 @@ class Main:
                 value = {DEVICE_STATE: p["value"] != "0100000000000000"}
             if value is not None:
                 self.set_device(device_id, value)
-        elif p["pt"] == "b" and dst == wpd:
+        elif p["pt"] == "b" and dst in wpd:
             device = WPD_DEVICE[p["sd"]] if p["sd"] in WPD_DEVICE else False
             room = p["sr"]
             value = None
@@ -528,7 +528,7 @@ class Main:
                 value = {DEVICE_STATE: True}
             if value is not None:
                 self.set_device(device_id, value)
-        elif p["pt"] == "b" and src == wpd:
+        elif p["pt"] == "b" and src in wpd:
             device = WPD_DEVICE[p["dd"]] if p["dd"] in WPD_DEVICE else False
             room = p["dr"]
             value = None
@@ -539,7 +539,7 @@ class Main:
                 value = {DEVICE_STATE: False}
             if value is not None:
                 self.set_device(device_id, value)
-        elif p["pt"] == "9" and src == wpd:
+        elif p["pt"] == "9" and src in wpd:
             device = WPD_DEVICE[p["dd"]] if p["dd"] in WPD_DEVICE else False
             room = p["dr"]
             value = {DEVICE_STATE: cmd == "65"}
