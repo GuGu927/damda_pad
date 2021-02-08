@@ -27,7 +27,7 @@ BRAND = "SmartKoreAssistant"
 DOMAIN = "skorea_wallpad"
 NAME = "SKA Wallpad"
 MODEL = "ska-wallpad"
-VERSION = "1.1"
+VERSION = "1.2"
 RELOAD_SIGNAL = "reload_wallpad_gateway"
 PLATFORMS = [
     BINARY_SENSOR_DOMAIN, CLIMATE_DOMAIN, FAN_DOMAIN, LIGHT_DOMAIN,

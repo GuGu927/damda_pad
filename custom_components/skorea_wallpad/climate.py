@@ -5,6 +5,8 @@ from homeassistant.components.climate import DOMAIN, ClimateEntity
 from homeassistant.components.climate.const import (
     HVAC_MODE_HEAT,
     HVAC_MODE_OFF,
+    HVAC_MODE_FAN_ONLY,
+    PRESET_AWAY,
     SUPPORT_TARGET_TEMPERATURE,
 )
 from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS
@@ -72,15 +74,20 @@ class WallpadThermostat(WallpadDevice, ClimateEntity):
     @property
     def hvac_modes(self) -> list:
         """Return the list of available hvac operation modes."""
-        return list([HVAC_MODE_HEAT, HVAC_MODE_OFF])
+        mode = self.gateway.api.thermo_mode
+        if mode is None:
+            mode = [HVAC_MODE_HEAT, HVAC_MODE_OFF]
+        return list(mode)
 
     async def async_set_hvac_mode(self, hvac_mode: str) -> None:
         """Set new target hvac mode."""
         if hvac_mode not in self.hvac_modes:
             raise ValueError(f"Unsupported HVAC mode {hvac_mode}")
         self.set_status({
-            THERMO_MODE: hvac_mode,
-            THERMO_TARGET: self.target_temperature
+            THERMO_MODE:
+            hvac_mode if hvac_mode != HVAC_MODE_FAN_ONLY else PRESET_AWAY,
+            THERMO_TARGET:
+            self.target_temperature
         })
 
     # Temperature control

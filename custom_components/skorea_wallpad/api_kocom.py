@@ -24,7 +24,7 @@ THERMO_PTR = re.compile("(.)..(.)(..)..(..)......")
 FAN_PTR = re.compile("(..)..(.)...........")
 
 BRAND = "KOCOM"
-VERSION = "1.1-b"
+VERSION = "1.1-b2"
 SCAN_LIST = [WPD_LIGHT, WPD_SWITCH, WPD_THERMOSTAT, WPD_GAS]
 
 WPD_DEVICE = {
@@ -85,6 +85,11 @@ class Main:
         self._que.daemon = True
         self._que.start()
 
+        self.last_target = None
+        self.thermo_mode = THERMO
+        for mode, packet in THERMO.items():
+            if self.entry.data.get(mode):
+                self.thermo_mode[mode] = packet
         self._packet = []
         self._flag = False
 
@@ -384,7 +389,7 @@ class Main:
             # print(device_id, sub_id, value)
             # thermostat_00 state {'mode': 'heat', 'target': 21.0}
             rv = ""
-            rv += THERMO[value[THERMO_MODE]]
+            rv += self.thermo_mode[value[THERMO_MODE]]
             rv += "{0:02x}".format(int(float(value[THERMO_TARGET])))
             rv += "0000000000"
             return rv
@@ -444,6 +449,7 @@ class Main:
         def parse_thermostat(device_id, packet_value):
             """ Parse thermostat """
             pmatch = THERMO_PTR.match(packet_value)
+            mode_packet = packet_value[:4]
             isOn = pmatch.group(1) == "1"
             isAway = pmatch.group(2) == "1"
             target = int(pmatch.group(3), 16)
@@ -455,13 +461,13 @@ class Main:
                 mode = THERMO_HEAT
             else:
                 mode = THERMO_OFF
-            if THERMO[mode] != packet_value[:4]:
-                THERMO[mode] = packet_value[:4]
-                # self.hass.config_entries.async_update_entry(
-                #     entry=self.entry,
-                #     data={
-                #         **self.entry.data, mode: packet_value[:4]
-                #     })
+            if self.thermo_mode[mode] != mode_packet:
+                self.thermo_mode[mode] = mode_packet
+                self.hass.config_entries.async_update_entry(
+                    entry=self.entry,
+                    data={
+                        **self.entry.data, mode: mode_packet
+                    })
             if mode == THERMO_AWAY:
                 last = self.entry.data.get(device_id)
                 target = last if last else DEFAULT_TARGET
@@ -470,10 +476,13 @@ class Main:
                 THERMO_TARGET: target,
                 THERMO_TEMP: temperature
             }
-            self.hass.config_entries.async_update_entry(
-                entry=self.entry, data={
-                    **self.entry.data, device_id: target
-                })
+            if self.last_target != target:
+                self.last_target = target
+                self.hass.config_entries.async_update_entry(
+                    entry=self.entry,
+                    data={
+                        **self.entry.data, device_id: target
+                    })
             return {DEVICE_STATE: state}
 
         def parse_fan(packet_value):
