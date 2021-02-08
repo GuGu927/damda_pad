@@ -24,10 +24,11 @@ THERMO_PTR = re.compile("(.)..(.)(..)..(..)......")
 FAN_PTR = re.compile("(..)..(.)...........")
 
 BRAND = "KOCOM"
-VERSION = "1.0"
+VERSION = "1.1-b"
 SCAN_LIST = [WPD_LIGHT, WPD_SWITCH, WPD_THERMOSTAT, WPD_GAS]
 
 WPD_DEVICE = {
+    "00": WPD_MAIN,
     "01": WPD_MAIN,
     "0e": WPD_LIGHT,
     "36": WPD_THERMOSTAT,
@@ -454,7 +455,13 @@ class Main:
                 mode = THERMO_HEAT
             else:
                 mode = THERMO_OFF
-            THERMO[mode] = packet_value[:4]
+            if THERMO[mode] != packet_value[:4]:
+                THERMO[mode] = packet_value[:4]
+                # self.hass.config_entries.async_update_entry(
+                #     entry=self.entry,
+                #     data={
+                #         **self.entry.data, mode: packet_value[:4]
+                #     })
             if mode == THERMO_AWAY:
                 last = self.entry.data.get(device_id)
                 target = last if last else DEFAULT_TARGET
@@ -480,6 +487,7 @@ class Main:
 
         packet = "".join(packet)
         pmatch = KOCOM_PTR.match(packet)
+        # KOCOM_PTR = re.compile("......(.)(.)..(..)(..)(..)(..)(..)(................)(..)....")
         p = {
             "pt": pmatch.group(1),
             "count": pmatch.group(2),
