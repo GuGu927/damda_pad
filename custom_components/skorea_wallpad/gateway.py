@@ -6,7 +6,6 @@ import time
 import re
 
 from .api_kocom import Main as Kocom
-from .api_commax import Main as Commax
 from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 
@@ -101,7 +100,7 @@ class WallpadGateway:
 
     @property
     def model(self) -> str:
-        return MODEL
+        return f"{MODEL}_{VERSION}"
 
     async def async_get_entity_registry(self) -> None:
         entity_registry = await self.hass.helpers.entity_registry.async_get_registry(
