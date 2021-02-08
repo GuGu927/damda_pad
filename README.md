@@ -31,7 +31,7 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 
 ### HACS
 
-- HACS > Integretions > 우측상단 메뉴 > Custom repositories 선택
+- HACS > Integretions > 우측상단 메뉴 > `Custom repositories` 선택
 - `https://github.com/GuGu927/Wallpad` 주소 입력, Category에 `integration` 선택 후, 저장
 - HACS > Integretions 메뉴에서 우측 하단 + 누르고 `SKA 월패드` 검색하여 설치
 
@@ -41,8 +41,8 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 
 - HA 사이드패널 > 설정 > 통합 구성요소 > 통합 구성요소 추가
 - 검색창에서 `ska wallpad` 입력 후 클릭
-- 소켓통신의 경우 IP 주소, 포트를 입력 후 확인
-- 씨리얼통신의 경우 씨리얼포트 주소 (ex: /dev/USB0) 입력 후 확인
+- 소켓통신의 경우 `IP 주소`, `포트`를 입력 후 확인
+- 씨리얼통신의 경우 씨리얼포트 주소 (ex: `/dev/USB0`) 입력 후 확인
 
 <br>
 
