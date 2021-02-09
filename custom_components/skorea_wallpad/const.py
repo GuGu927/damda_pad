@@ -7,10 +7,6 @@ from homeassistant.components.light import DOMAIN as LIGHT_DOMAIN
 from homeassistant.components.sensor import DOMAIN as SENSOR_DOMAIN
 from homeassistant.components.switch import DOMAIN as SWITCH_DOMAIN
 from homeassistant.components.climate.const import (
-    FAN_AUTO,
-    FAN_HIGH,
-    FAN_LOW,
-    FAN_MEDIUM,
     FAN_OFF,
     FAN_ON,
     HVAC_MODE_AUTO,
@@ -27,7 +23,7 @@ BRAND = "SmartKoreAssistant"
 DOMAIN = "skorea_wallpad"
 NAME = "SKA Wallpad"
 MODEL = "ska-wallpad"
-VERSION = "1.3"
+VERSION = "1.4"
 RELOAD_SIGNAL = "reload_wallpad_gateway"
 PLATFORMS = [
     BINARY_SENSOR_DOMAIN, CLIMATE_DOMAIN, FAN_DOMAIN, LIGHT_DOMAIN,
@@ -47,7 +43,10 @@ WPD_FAN = "fan"
 WPD_GAS = "gas"
 WPD_EV = "elevator"
 WPD_MOTION = "motion"
-WPD_MAIN_LIST = [WPD_GAS, WPD_EV, WPD_DOORLOCK, WPD_FAN, WPD_MOTION]
+WPD_LIGHTBREAK = "lightbreak"
+WPD_MAIN_LIST = [
+    WPD_GAS, WPD_EV, WPD_DOORLOCK, WPD_FAN, WPD_MOTION, WPD_LIGHTBREAK
+]
 
 SEND_INTERVAL = 600
 SCAN_INTERVAL = 6 * 60
@@ -76,6 +75,7 @@ THERMO_TEMP = "temperature"
 
 ENTITY_MAP = {
     WPD_LIGHT: LIGHT_DOMAIN,
+    WPD_LIGHTBREAK: LIGHT_DOMAIN,
     WPD_SWITCH: SWITCH_DOMAIN,
     WPD_THERMOSTAT: CLIMATE_DOMAIN,
     WPD_GAS: SWITCH_DOMAIN,

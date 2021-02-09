@@ -3,11 +3,12 @@ import re
 import time
 import threading
 
+from homeassistant.components.fan import SPEED_HIGH, SPEED_LOW, SPEED_MEDIUM, SPEED_OFF
 from homeassistant.core import callback
 from .const import (
     PLATFORMS, WPD_MAIN, WPD_DOORLOCK, WPD_EV, WPD_FAN, WPD_GAS, WPD_LIGHT,
-    WPD_MOTION, WPD_SWITCH, WPD_THERMOSTAT, WPD_MAIN_LIST, FAN_STATE, FAN_HIGH,
-    FAN_MEDIUM, FAN_LOW, FAN_OFF, FAN_ON, FAN_SPEED, THERMO_AWAY, THERMO_HEAT,
+    WPD_MOTION, WPD_SWITCH, WPD_THERMOSTAT, WPD_LIGHTBREAK, WPD_MAIN_LIST,
+    FAN_STATE, FAN_OFF, FAN_ON, FAN_SPEED, THERMO_AWAY, THERMO_HEAT,
     THERMO_MODE, THERMO_OFF, THERMO_TARGET, THERMO_TEMP, SIGNAL, SEND_INTERVAL,
     SCAN_INTERVAL, SCAN_LIST, TICK, DEVICE_STATE, DEVICE_INFO, DEVICE_UNIQUE,
     DEVICE_ROOM, DEVICE_GET, DEVICE_SET, DEVICE_REG, DEVICE_UNREG,
@@ -24,7 +25,7 @@ THERMO_PTR = re.compile("(.)..(.)(..)..(..)......")
 FAN_PTR = re.compile("(..)..(.)...........")
 
 BRAND = "KOCOM"
-VERSION = "1.2b"
+VERSION = "1.4"
 SCAN_LIST = [WPD_LIGHT, WPD_SWITCH, WPD_THERMOSTAT, WPD_GAS, WPD_FAN]
 
 WPD_DEVICE = {
@@ -48,7 +49,14 @@ CMD = {
     "04": CMD_DETECT
 }
 
-FAN = {FAN_ON: "1100", FAN_OFF: "0001", FAN_LOW: 1, FAN_MEDIUM: 2, FAN_HIGH: 3}
+FAN = {
+    FAN_ON: "1100",
+    FAN_OFF: "0001",
+    SPEED_LOW: 1,
+    SPEED_MEDIUM: 2,
+    SPEED_HIGH: 3
+}
+FAN_SPEED_LIST = [SPEED_OFF, SPEED_LOW, SPEED_MEDIUM, SPEED_HIGH]
 THERMO = {THERMO_HEAT: "1100", THERMO_AWAY: "1101", THERMO_OFF: "0100"}
 
 PACKET_HEADER = "aa"
@@ -85,7 +93,7 @@ class Main:
         self._que.daemon = True
         self._que.start()
 
-        self.last_target = None
+        self.last_target = {}
         self.thermo_mode = THERMO
         for mode, packet in THERMO.items():
             if self.entry.data.get(mode):
@@ -469,14 +477,15 @@ class Main:
             if mode != THERMO_HEAT:
                 last = self.entry.data.get(device_id)
                 target = last if last else DEFAULT_TARGET
-                self.last_target = target
+                self.last_target[device_id] = target
             state = {
                 THERMO_MODE: mode,
                 THERMO_TARGET: target,
                 THERMO_TEMP: temperature
             }
-            if self.last_target != target:
-                self.last_target = target
+            if (device_id in self.last_target
+                    and self.last_target[device_id] != target):
+                self.last_target[device_id] = target
                 self.hass.config_entries.async_update_entry(
                     entry=self.entry,
                     data={
@@ -488,8 +497,7 @@ class Main:
             """ Parse fan """
             pmatch = FAN_PTR.match(packet_value)
             isOn = pmatch.group(1) == "11"
-            speed = [FAN_LOW, FAN_MEDIUM,
-                     FAN_HIGH][int((int(pmatch.group(2), 16) / 4) - 1)]
+            speed = FAN_SPEED_LIST[int((int(pmatch.group(2), 16) / 4))]
             state = {FAN_STATE: isOn, FAN_SPEED: speed}
             return {DEVICE_STATE: state}
 
