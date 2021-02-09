@@ -58,7 +58,8 @@ class WallpadFan(WallpadDevice, FanEntity):
     @property
     def is_on(self) -> bool:
         """Return true if fan is on."""
-        return self.speed != SPEED_OFF
+        status = self.get_status()
+        if status is not None: return status.get(DEVICE_STATE)
 
     @property
     def speed(self) -> int:
@@ -83,9 +84,9 @@ class WallpadFan(WallpadDevice, FanEntity):
             FAN_SPEED: speed
         })
 
-    async def async_turn_on(self, speed: str = None, **kwargs) -> None:
+    async def async_turn_on(self, speed: str = FAN_MEDIUM, **kwargs) -> None:
         """Turn on fan."""
-        self.set_status({DEVICE_STATE: FAN_ON, FAN_SPEED: FAN_MEDIUM})
+        self.set_status({DEVICE_STATE: FAN_ON, FAN_SPEED: speed})
 
     async def async_turn_off(self, **kwargs) -> None:
         """Turn off fan."""

@@ -5,10 +5,10 @@ import threading
 
 from homeassistant.core import callback
 from .const import (
-    WPD_MAIN, WPD_DOORLOCK, WPD_EV, WPD_FAN, WPD_GAS, WPD_LIGHT, WPD_MOTION,
-    WPD_SWITCH, WPD_THERMOSTAT, WPD_MAIN_LIST, FAN_STATE, FAN_HIGH, FAN_MEDIUM,
-    FAN_LOW, FAN_OFF, FAN_ON, FAN_SPEED, THERMO_AWAY, THERMO_HEAT, THERMO_MODE,
-    THERMO_OFF, THERMO_TARGET, THERMO_TEMP, SIGNAL, SEND_INTERVAL,
+    PLATFORMS, WPD_MAIN, WPD_DOORLOCK, WPD_EV, WPD_FAN, WPD_GAS, WPD_LIGHT,
+    WPD_MOTION, WPD_SWITCH, WPD_THERMOSTAT, WPD_MAIN_LIST, FAN_STATE, FAN_HIGH,
+    FAN_MEDIUM, FAN_LOW, FAN_OFF, FAN_ON, FAN_SPEED, THERMO_AWAY, THERMO_HEAT,
+    THERMO_MODE, THERMO_OFF, THERMO_TARGET, THERMO_TEMP, SIGNAL, SEND_INTERVAL,
     SCAN_INTERVAL, SCAN_LIST, TICK, DEVICE_STATE, DEVICE_INFO, DEVICE_UNIQUE,
     DEVICE_ROOM, DEVICE_GET, DEVICE_SET, DEVICE_REG, DEVICE_UNREG,
     DEVICE_UPDATE, DEVICE_TRY, ENTITY_MAP, DEVICE_ID, DEVICE_NAME, DEVICE_TYPE,
@@ -24,8 +24,8 @@ THERMO_PTR = re.compile("(.)..(.)(..)..(..)......")
 FAN_PTR = re.compile("(..)..(.)...........")
 
 BRAND = "KOCOM"
-VERSION = "1.2"
-SCAN_LIST = [WPD_LIGHT, WPD_SWITCH, WPD_THERMOSTAT, WPD_GAS]
+VERSION = "1.2b"
+SCAN_LIST = [WPD_LIGHT, WPD_SWITCH, WPD_THERMOSTAT, WPD_GAS, WPD_FAN]
 
 WPD_DEVICE = {
     "00": WPD_MAIN,
@@ -313,11 +313,7 @@ class Main:
                    and que[DEVICE_STATE][THERMO_TARGET]
                    == state[que[DEVICE_SUB]][THERMO_TARGET])))):
                 self.deque()
-        KNOWN_DEVICE = [
-            SWITCH_DOMAIN, LIGHT_DOMAIN, BINARY_SENSOR_DOMAIN, CLIMATE_DOMAIN,
-            FAN_DOMAIN, SENSOR_DOMAIN
-        ]
-        if wpd_to_entity in KNOWN_DEVICE:
+        if wpd_to_entity in PLATFORMS:
             for sub_id, value in state.items():
                 add(device_id, sub_id, value)
         else:
@@ -329,7 +325,7 @@ class Main:
         old_state = self.device[device_id][DEVICE_STATE]
         if old_state != state:
             _LOGGER.debug(f"[{BRAND}] Wallpad {device_id} => {state}")
-            if wpd_to_entity in KNOWN_DEVICE:
+            if wpd_to_entity in PLATFORMS:
                 self.device[device_id][DEVICE_STATE] = state
                 for sub_id, value in state.items():
                     update(device_id, sub_id, old_state, value)
@@ -400,7 +396,7 @@ class Main:
             """ Make value packet of fan """
             rv = ""
             rv += FAN[value[DEVICE_STATE]]
-            rv += "{0:02x}".format(int(float(value[FAN_SPEED])) * 4)
+            rv += "{0:02x}".format(int(FAN[value[FAN_SPEED]]) * 4)
             rv += "0000000000"
             return rv
 
@@ -493,7 +489,7 @@ class Main:
             pmatch = FAN_PTR.match(packet_value)
             isOn = pmatch.group(1) == "11"
             speed = [FAN_LOW, FAN_MEDIUM,
-                     FAN_HIGH][(int(pmatch.group(2), 16) / 4) - 1]
+                     FAN_HIGH][int((int(pmatch.group(2), 16) / 4) - 1)]
             state = {FAN_STATE: isOn, FAN_SPEED: speed}
             return {DEVICE_STATE: state}
 

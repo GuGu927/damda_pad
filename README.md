@@ -25,6 +25,7 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 |  v1.0   | 2021.02.07 | First version                    |
 |  v1.1   | 2021.02.08 | Serial통신 추가                  |
 |  v1.2   | 2021.02.09 | 난방 외출모드(송풍) 추가(적응형) |
+|  v1.3   | 2021.02.09 | FAN 수정, 코콤 환기장치 버그수정 |
 
 <br>
 
@@ -59,7 +60,7 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 
 ### 현재 가능한 월패드(최신버전 기준)
 
-- 코콤(v1.2)
+- 코콤(v1.3)
 
 <br>
 
