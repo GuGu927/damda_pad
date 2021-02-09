@@ -24,7 +24,7 @@ THERMO_PTR = re.compile("(.)..(.)(..)..(..)......")
 FAN_PTR = re.compile("(..)..(.)...........")
 
 BRAND = "KOCOM"
-VERSION = "1.1"
+VERSION = "1.2"
 SCAN_LIST = [WPD_LIGHT, WPD_SWITCH, WPD_THERMOSTAT, WPD_GAS]
 
 WPD_DEVICE = {
