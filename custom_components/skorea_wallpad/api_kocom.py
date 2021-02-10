@@ -25,7 +25,7 @@ THERMO_PTR = re.compile("(.)..(.)(..)..(..)......")
 FAN_PTR = re.compile("(..)..(.)...........")
 
 BRAND = "KOCOM"
-VERSION = "1.4"
+VERSION = "1.5"
 SCAN_LIST = [WPD_LIGHT, WPD_SWITCH, WPD_THERMOSTAT, WPD_GAS, WPD_FAN]
 
 WPD_DEVICE = {
@@ -50,7 +50,7 @@ CMD = {
 }
 
 FAN = {
-    FAN_ON: "1100",
+    FAN_ON: "1101",
     FAN_OFF: "0001",
     SPEED_LOW: 1,
     SPEED_MEDIUM: 2,
@@ -404,8 +404,8 @@ class Main:
             """ Make value packet of fan """
             rv = ""
             rv += FAN[value[DEVICE_STATE]]
-            rv += "{0:02x}".format(int(FAN[value[FAN_SPEED]]) * 4)
-            rv += "0000000000"
+            rv += "{0:x}".format(int(FAN[value[FAN_SPEED]]) * 4)
+            rv += "00000000000"
             return rv
 
         send_type = "b"
@@ -518,6 +518,9 @@ class Main:
         wpd, dst, src = ["0000", "0100"], p["dd"] + p["dr"], p["sd"] + p["sr"]
         cmd = CMD[p["cmd"]] if p["cmd"] in CMD else False
         if p["pt"] == "d" and src in wpd:
+            _LOGGER.debug(
+                f'[{BRAND}] Wallpad packet income [{src} -> {dst}] [{cmd}] [{p["value"]}] => {packet}'
+            )
             device = WPD_DEVICE[p["dd"]] if p["dd"] in WPD_DEVICE else False
             room = p["dr"]
             value = None
@@ -536,6 +539,9 @@ class Main:
             if value is not None:
                 self.set_device(device_id, value)
         elif p["pt"] == "b" and dst in wpd:
+            _LOGGER.debug(
+                f'[{BRAND}] Wallpad packet income [{src} -> {dst}] [{cmd}] [{p["value"]}] => {packet}'
+            )
             device = WPD_DEVICE[p["sd"]] if p["sd"] in WPD_DEVICE else False
             room = p["sr"]
             value = None
@@ -545,6 +551,9 @@ class Main:
             if value is not None:
                 self.set_device(device_id, value)
         elif p["pt"] == "b" and src in wpd:
+            _LOGGER.debug(
+                f'[{BRAND}] Wallpad packet income [{src} -> {dst}] [{cmd}] [{p["value"]}] => {packet}'
+            )
             device = WPD_DEVICE[p["dd"]] if p["dd"] in WPD_DEVICE else False
             room = p["dr"]
             value = None
@@ -556,6 +565,9 @@ class Main:
             if value is not None:
                 self.set_device(device_id, value)
         elif p["pt"] == "9" and src in wpd:
+            _LOGGER.debug(
+                f'[{BRAND}] Wallpad packet income [{src} -> {dst}] [{cmd}] [{p["value"]}] => {packet}'
+            )
             device = WPD_DEVICE[p["dd"]] if p["dd"] in WPD_DEVICE else False
             room = p["dr"]
             value = {DEVICE_STATE: cmd == "65"}

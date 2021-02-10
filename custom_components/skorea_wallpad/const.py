@@ -19,11 +19,11 @@ from homeassistant.components.climate.const import (
     SUPPORT_TARGET_TEMPERATURE,
 )
 
+VERSION = "1.5"
 BRAND = "SmartKoreAssistant"
 DOMAIN = "skorea_wallpad"
 NAME = "SKA Wallpad"
 MODEL = "ska-wallpad"
-VERSION = "1.4"
 RELOAD_SIGNAL = "reload_wallpad_gateway"
 PLATFORMS = [
     BINARY_SENSOR_DOMAIN, CLIMATE_DOMAIN, FAN_DOMAIN, LIGHT_DOMAIN,
