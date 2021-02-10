@@ -498,7 +498,7 @@ class Main:
             pmatch = FAN_PTR.match(packet_value)
             isOn = pmatch.group(1) == "11"
             speed = FAN_SPEED_LIST[int((int(pmatch.group(2), 16) / 4))]
-            state = {FAN_STATE: isOn, FAN_SPEED: speed}
+            state = {FAN_STATE: FAN_ON if isOn else FAN_OFF, FAN_SPEED: speed}
             return {DEVICE_STATE: state}
 
         packet = "".join(packet)
