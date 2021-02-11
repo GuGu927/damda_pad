@@ -27,7 +27,7 @@ THERMO_PTR = re.compile("(.)..(.)(..)..(..)......")
 FAN_PTR = re.compile("(..)..(.)...........")
 
 BRAND = "KOCOM"
-VERSION = "1.6"
+VERSION = "1.8"
 SCAN_LIST = [WPD_LIGHT, WPD_SWITCH, WPD_THERMOSTAT, WPD_GAS, WPD_FAN]
 
 WPD_DEVICE = {
@@ -266,14 +266,15 @@ class Main:
                 try:
                     que = self.packet_que[0]
                 except:
-                    pass
+                    continue
+                value = que[DEVICE_STATE]
                 interval = self.get_option(OPT_SEND_INT, SEND_INTERVAL)
+                if value == CMD_SCAN: interval = interval * 3
                 if (que and now - self.tick > interval / 1000
                         and now - que[TICK] > interval / 1000):
                     count = que[DEVICE_TRY]
                     device_id = que[DEVICE_ID]
                     sub_id = que[DEVICE_SUB]
-                    value = que[DEVICE_STATE]
                     packet = self.make_packet(device_id, sub_id, value)
                     if packet is False: count = 6
                     _LOGGER.debug(
@@ -328,14 +329,26 @@ class Main:
 
         if len(self.packet_que) > 0:
             que = self.packet_que[0]
-            if ((que[DEVICE_ID] == device_id and que[DEVICE_STATE] == CMD_SCAN)
-                    or
-                (que[DEVICE_SUB] in state and que[DEVICE_ID] == device_id and
-                 (que[DEVICE_STATE] == state[que[DEVICE_SUB]] or
-                  (device_type in [WPD_THERMOSTAT] and que[DEVICE_STATE]
-                   [THERMO_MODE] == state[que[DEVICE_SUB]][THERMO_MODE]
-                   and que[DEVICE_STATE][THERMO_TARGET]
-                   == state[que[DEVICE_SUB]][THERMO_TARGET])))):
+            right_id = que[DEVICE_ID] == device_id
+            is_scan = que[DEVICE_STATE] == CMD_SCAN
+            is_target = False
+            if not is_scan:
+                if device_type == WPD_THERMOSTAT:
+                    is_mode = que[DEVICE_STATE][THERMO_MODE] == state.get(
+                        que[DEVICE_SUB], {}).get(THERMO_MODE, None)
+                    is_temp = que[DEVICE_STATE][THERMO_TARGET] == state.get(
+                        que[DEVICE_SUB], {}).get(THERMO_TARGET, None)
+                    is_target = is_mode and is_temp
+                elif device_type == WPD_FAN:
+                    is_mode = que[DEVICE_STATE][FAN_STATE] == state.get(
+                        que[DEVICE_SUB], {}).get(FAN_STATE, None)
+                    is_speed = que[DEVICE_STATE][FAN_SPEED] == state.get(
+                        que[DEVICE_SUB], {}).get(FAN_SPEED, None)
+                    is_target = is_mode and is_speed
+                else:
+                    is_target = que[DEVICE_STATE] == state.get(
+                        que[DEVICE_SUB], None)
+            if (right_id and (is_scan or is_target)):
                 self.deque()
         if wpd_to_entity in PLATFORMS:
             for sub_id, value in state.items():
@@ -455,6 +468,8 @@ class Main:
 
     def parse(self, packet):
         """ Parse packet """
+        self.set_tick()
+
         def parse_switch(packet_value):
             """ Parse switch/light """
             state = {}

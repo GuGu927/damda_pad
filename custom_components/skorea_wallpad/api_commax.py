@@ -258,7 +258,7 @@ class Main:
                 try:
                     que = self.packet_que[0]
                 except:
-                    pass
+                    continue
                 interval = self.get_option(OPT_SEND_INT, SEND_INTERVAL)
                 if (que and now - self.tick > interval / 1000
                         and now - que[TICK] > interval / 1000):
