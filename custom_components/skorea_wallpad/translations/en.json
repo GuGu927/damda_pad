@@ -16,7 +16,7 @@
       "init": {
         "title": "SKA Wallpad Options.",
         "data": {
-          "host": "Host : TCP/IP socket IP address(192.168.x.x) or Serial port address(/dev/ttyXXX).",
+          "host": "Host : Socket IP(192.168.x.x) or Serial port(/dev/ttyXXX).",
           "port": "Port : When host is Socket.(default:8899)",
           "scan_list": "Scan List : Scan selected device with scan interval.",
           "scan_interval": "Scan Interval : Interval between wallpad scan.(sec)",

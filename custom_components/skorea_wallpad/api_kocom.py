@@ -455,7 +455,6 @@ class Main:
 
     def parse(self, packet):
         """ Parse packet """
-        self.set_tick()
         def parse_switch(packet_value):
             """ Parse switch/light """
             state = {}
