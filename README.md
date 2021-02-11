@@ -50,7 +50,7 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 - HA 사이드패널 > 설정 > 통합 구성요소 > 통합 구성요소 추가
 - 검색창에서 `ska wallpad` 입력 후 클릭
 - 소켓통신의 경우 `IP 주소`, `포트`를 입력 후 확인
-- 씨리얼통신의 경우 씨리얼포트 주소 (ex: `/dev/USB0`) 입력 후 확인
+- 씨리얼통신의 경우 씨리얼포트 주소 (ex: `/dev/ttyUSB0`) 입력 후 확인
 
 <br>
 
