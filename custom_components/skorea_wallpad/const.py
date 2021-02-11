@@ -1,5 +1,6 @@
 """Constants for the KoreAssistant integration."""
-
+import voluptuous as vol
+import homeassistant.helpers.config_validation as cv
 from homeassistant.components.binary_sensor import DOMAIN as BINARY_SENSOR_DOMAIN
 from homeassistant.components.climate import DOMAIN as CLIMATE_DOMAIN
 from homeassistant.components.fan import DOMAIN as FAN_DOMAIN
@@ -19,7 +20,7 @@ from homeassistant.components.climate.const import (
     SUPPORT_TARGET_TEMPERATURE,
 )
 
-VERSION = "1.5"
+VERSION = "1.7"
 BRAND = "SmartKoreAssistant"
 DOMAIN = "skorea_wallpad"
 NAME = "SKA Wallpad"
@@ -31,6 +32,7 @@ PLATFORMS = [
 ]
 
 CONF_SOCKET, DEFAULT_SOCKET = "socket", "192.168.x.x"
+CONF_HOST, DEFAULT_HOST = "host", "192.168.x.x or /dev/ttyXXX"
 CONF_PORT, DEFAULT_PORT = "port", 8899
 CONF_WPD = "wallpad"
 
@@ -48,11 +50,6 @@ WPD_MAIN_LIST = [
     WPD_GAS, WPD_EV, WPD_DOORLOCK, WPD_FAN, WPD_MOTION, WPD_LIGHTBREAK
 ]
 
-SEND_INTERVAL = 600
-SCAN_INTERVAL = 6 * 60
-SCAN_LIST = []
-SEND_TRY = 5
-
 NEW_LIGHT = "lights"
 NEW_SWITCH = "switchs"
 NEW_SENSOR = "sensors"
@@ -65,6 +62,7 @@ DEFAULT_TEMP = 10
 
 FAN_STATE = "state"
 FAN_SPEED = "speed"
+FAN_MODE = "mode"
 
 THERMO_HEAT = HVAC_MODE_HEAT
 THERMO_AWAY = PRESET_AWAY
@@ -115,3 +113,25 @@ CMD_STATUS = "상태"
 CMD_ON = "켜짐"
 CMD_OFF = "꺼짐"
 CMD_DETECT = "감지"
+
+
+def int_between(min_int, max_int):
+    """Return an integer between 'min_int' and 'max_int'."""
+    return vol.All(vol.Coerce(int), vol.Range(min=min_int, max=max_int))
+
+
+SCAN_LIST = [WPD_LIGHT, WPD_SWITCH, WPD_THERMOSTAT, WPD_GAS, WPD_FAN]
+SEND_RETRY = 5
+SEND_INTERVAL = 300
+SCAN_INTERVAL = 6 * 60
+OPT_SCAN_LIST = "scan_list"
+OPT_SCAN_INT = "scan_interval"
+OPT_SEND_RETRY = "send_retry"
+OPT_SEND_INT = "send_interval"
+OPT_DEFAULT = [(CONF_HOST, DEFAULT_HOST, cv.string),
+               (CONF_PORT, DEFAULT_PORT, cv.port),
+               (OPT_SEND_RETRY, SEND_RETRY, cv.positive_int),
+               (OPT_SEND_INT, SEND_INTERVAL, int_between(10, 2000))]
+OPT_KOCOM = [(OPT_SCAN_LIST, SCAN_LIST, cv.multi_select(SCAN_LIST)),
+             (OPT_SCAN_INT, SCAN_INTERVAL, cv.positive_int)]
+OPTION_LIST = {"default": OPT_DEFAULT, "kocom": OPT_DEFAULT + OPT_KOCOM}

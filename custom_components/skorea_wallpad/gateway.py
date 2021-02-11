@@ -6,11 +6,12 @@ import time
 import re
 
 from .api_kocom import Main as Kocom
+from .api_commax import Main as Commax
 from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 
-from .const import (CONF_SOCKET, CONF_PORT, CONF_WPD, NAME, DOMAIN, BRAND,
-                    VERSION, MODEL, NEW_LIGHT, NEW_SWITCH, NEW_FAN,
+from .const import (CONF_SOCKET, CONF_HOST, CONF_PORT, CONF_WPD, NAME, DOMAIN,
+                    BRAND, VERSION, MODEL, NEW_LIGHT, NEW_SWITCH, NEW_FAN,
                     NEW_CLIMATE, NEW_SENSOR, NEW_BSENSOR, RELOAD_SIGNAL,
                     CLIMATE_DOMAIN, BINARY_SENSOR_DOMAIN, SENSOR_DOMAIN,
                     FAN_DOMAIN, SWITCH_DOMAIN, LIGHT_DOMAIN)
@@ -43,7 +44,6 @@ class WallpadGateway:
         self.hass = hass
         self.entry = entry
         self.dr_id = None
-
         self._rs485 = {"type": rs_type(self.host), "connect": None}
         self._poll = False
         self.api = None
@@ -70,7 +70,7 @@ class WallpadGateway:
     @property
     def host(self) -> str:
         """Return the connection type(IP addr or USB dir)"""
-        return self.entry.data.get(CONF_SOCKET)
+        return self.entry.data.get(CONF_HOST)
 
     @property
     def port(self) -> int:
@@ -188,7 +188,10 @@ class WallpadGateway:
                 return False
             soc.settimeout(240)
             self._rs485["connect"] = soc
-        elif self._rs485["connect"] == "serial":
+            _LOGGER.info(
+                f"[{BRAND}] {self._rs485['type']} 에 연결했습니다. {self.host}:{self.port}"
+            )
+        elif self._rs485["type"] == "serial":
             try:
                 ser = serial.Serial(self.host, 9600, timeout=None)
                 if ser.isOpen():
@@ -196,6 +199,11 @@ class WallpadGateway:
                     ser.stopbits = 1
                     ser.parity = serial.PARITY_NONE if self.manufacturer != "samsungsds" else serial.PARITY_EVEN
                     self._rs485["connect"] = ser
+                    _LOGGER.info(
+                        f"[{BRAND}] {self._rs485['type']} 에 연결했습니다. {self.host}"
+                    )
+                else:
+                    _LOGGER.info(f'시리얼포트가 열려있지 않습니다.[{self.host}]')
             except Exception as e:
                 _LOGGER.info(
                     f"[{BRAND}] {self._rs485['type']} 에 연결할 수 없습니다.[{self.host}][{e}]"
@@ -203,9 +211,6 @@ class WallpadGateway:
                 return False
         if self._rs485["connect"] is not None:
             self.available = True
-            _LOGGER.info(
-                f"[{BRAND}] {self._rs485['type']} 에 연결했습니다. {self.host}:{self.port}"
-            )
             return True
         return False
 

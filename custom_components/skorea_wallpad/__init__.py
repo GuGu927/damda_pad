@@ -8,7 +8,8 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from .gateway import WallpadGateway
 
-from .const import (DOMAIN, PLATFORMS, BRAND, RELOAD_SIGNAL)
+from .const import (DOMAIN, PLATFORMS, BRAND, RELOAD_SIGNAL, CONF_SOCKET,
+                    CONF_HOST)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -58,3 +59,22 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
         hass.data[DOMAIN].pop(entry.unique_id)
 
     return unload_ok
+
+
+async def async_migrate_entry(hass, config_entry: ConfigEntry):
+    """Migrate old entry."""
+    _LOGGER.debug("Migrating from version %s", config_entry.version)
+
+    if config_entry.version == 1:
+
+        new = {**config_entry.data}
+        new[CONF_HOST] = new[CONF_SOCKET]
+        new.pop(CONF_SOCKET)
+
+        config_entry.data = {**new}
+
+        config_entry.version = 2
+
+    _LOGGER.info("Migration to version %s successful", config_entry.version)
+
+    return True

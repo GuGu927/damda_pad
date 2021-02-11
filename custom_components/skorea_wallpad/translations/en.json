@@ -1,4 +1,5 @@
 {
+  "title": "SKA Wallpad",
   "config": {
     "abort": {
       "no_devices_found": "No devices found on the network",
@@ -10,5 +11,19 @@
       }
     }
   },
-  "title": "SKA Wallpad"
+  "options": {
+    "step": {
+      "init": {
+        "title": "SKA Wallpad Options.",
+        "data": {
+          "host": "Host : TCP/IP socket IP address(192.168.x.x) or Serial port address(/dev/ttyXXX).",
+          "port": "Port : When host is Socket.",
+          "scan_list": "Scan List : Scan selected device with scan interval.",
+          "scan_interval": "Scan Interval : Interval between wallpad scan.(sec)",
+          "send_retry": "Send Retry : If send fails x times, add device to ignore list.",
+          "send_interval": "Send Interval : Interval between packet send.(millisecond)"
+        }
+      }
+    }
+  }
 }

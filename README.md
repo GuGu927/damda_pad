@@ -30,6 +30,8 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 |  v1.3   | 2021.02.09 | fan 수정, 코콤 환기장치 버그수정         |
 |  v1.4   | 2021.02.10 | const 수정, 코콤 난방 설정온도 관련 수정 |
 |  v1.5   | 2021.02.10 | fan 버그수정, 코콤 환기장치 버그수정     |
+|  v1.6   | 2021.02.10 | device_registry 관련 수정                |
+|  v1.7   | 2021.02.11 | config_flow 옵션 추가, 코맥스 지원       |
 
 <br>
 
@@ -38,7 +40,7 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 ### HACS
 
 - HACS > Integretions > 우측상단 메뉴 > `Custom repositories` 선택
-- `https://github.com/GuGu927/Wallpad` 주소 입력, Category에 `integration` 선택 후, 저장
+- `https://github.com/GuGu927/SKA-Wallpad` 주소 입력, Category에 `integration` 선택 후, 저장
 - HACS > Integretions 메뉴에서 우측 하단 + 누르고 `SKA 월패드` 검색하여 설치
 
 <br>
@@ -55,26 +57,33 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 ### 월패드 별 설정방법
 
 - **코콤** > 월패드에서 조회 혹은 조작하기
+
   - 가스차단, 난방 > 상태조회
   - 조명, 대기전력차단 > On/Off 제어
   - 엘레베이터 > 호출
   - 현관모션감지 > 현관 앞에서 움직임
 
+- **코맥스** > 월패드에서 조작
+  - 난방 > 자동인식
+  - 조명, 대기전력차단 > On/Off 제어
+  - 가스차단 > On/Off 제어
+  - 엘레베이터 > 자동인식
+
 <br>
 
 ### 현재 가능한 월패드(최신버전 기준)
 
-- 코콤(v1.5)
+- 코콤(v1.6)
+- 코맥스(v1.0)
 
 <br>
 
 ### 지원 예정 월패드
 
-- 코맥스
+- 현대통신
 - 삼성SDS
 - CVNET
 - 이지빌
-- 현대통신
 
 <br>
 

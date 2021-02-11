@@ -45,11 +45,11 @@ class WallpadBase:
             "connections": {(DOMAIN, self.unique_id)},
             "identifiers":
             {(DOMAIN,
-              f"{self.gateway.brand}_{self.gateway.api.brand}_{self.device_room}"
+              f"{self.gateway.brand}_{self.gateway.api.brand}_{self.device_type}"
               )},
             "manufacturer": self.gateway.brand,
             "model": f"{self.gateway.api.brand}_{self.gateway.api.version}",
-            "name": f"{self.gateway.api.brand_name} {self.device_room}",
+            "name": f"{self.gateway.api.brand_name} {self.device_type}",
             "sw_version": self.gateway.api.version,
             "via_device": (DOMAIN, self.gateway.host),
         }
