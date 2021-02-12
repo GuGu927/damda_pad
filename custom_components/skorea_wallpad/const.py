@@ -110,6 +110,7 @@ SIGNAL = {
 
 CMD_SCAN = "조회"
 CMD_STATUS = "상태"
+CMD_CHANGE = "제어"
 CMD_ON = "켜짐"
 CMD_OFF = "꺼짐"
 CMD_DETECT = "감지"

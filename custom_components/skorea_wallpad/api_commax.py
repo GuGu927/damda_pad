@@ -15,9 +15,9 @@ from .const import (
     SCAN_INTERVAL, TICK, DEVICE_STATE, DEVICE_INFO, DEVICE_UNIQUE, DEVICE_ROOM,
     DEVICE_GET, DEVICE_SET, DEVICE_REG, DEVICE_UNREG, DEVICE_UPDATE,
     DEVICE_TRY, ENTITY_MAP, DEVICE_ID, DEVICE_NAME, DEVICE_TYPE, DEVICE_SUB,
-    CMD_SCAN, CMD_STATUS, CMD_ON, CMD_OFF, CMD_DETECT, CLIMATE_DOMAIN,
-    BINARY_SENSOR_DOMAIN, SENSOR_DOMAIN, FAN_DOMAIN, SWITCH_DOMAIN,
-    LIGHT_DOMAIN)
+    CMD_SCAN, CMD_STATUS, CMD_CHANGE, CMD_ON, CMD_OFF, CMD_DETECT,
+    CLIMATE_DOMAIN, BINARY_SENSOR_DOMAIN, SENSOR_DOMAIN, FAN_DOMAIN,
+    SWITCH_DOMAIN, LIGHT_DOMAIN)
 _LOGGER = logging.getLogger(__name__)
 
 COMMAX_PTR = re.compile("(..)(..)(..)(..)(..)....(..)")
@@ -28,7 +28,7 @@ FAN_PTR = re.compile("(..)(..)(..)(..)......(..)")
 GAS_PTR = re.compile("(..)(..)(..)........(..)")
 
 BRAND = "COMMAX"
-VERSION = "1.0"
+VERSION = "1.1"
 SCAN_LIST = []
 
 STATE_LIGHT = ["b0", "b1"]
@@ -525,7 +525,8 @@ class Main:
             ]:
                 if device == CMD_THERMO:
                     detect_thermostat(p[3])
-                _LOGGER.debug(f"[{BRAND}] Wallpad parse command -> {packet}")
+                _LOGGER.debug(
+                    f"[{BRAND}] Wallpad packet discovery -> {packet}")
         except:
             _LOGGER.debug(f"[{BRAND}] Wallpad parse error -> {packet}")
 
