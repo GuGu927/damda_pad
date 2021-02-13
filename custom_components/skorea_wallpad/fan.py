@@ -79,14 +79,13 @@ class WallpadFan(WallpadDevice, FanEntity):
 
     async def async_set_speed(self, speed: str) -> None:
         """Set the speed of the fan."""
-        self.set_status({
-            DEVICE_STATE: FAN_ON if speed != SPEED_OFF else FAN_OFF,
-            FAN_SPEED: speed
-        })
+        state = FAN_OFF if speed == SPEED_OFF else FAN_ON
+        self.set_status({DEVICE_STATE: state, FAN_SPEED: speed})
 
     async def async_turn_on(self, speed: str = FAN_MEDIUM, **kwargs) -> None:
         """Turn on fan."""
-        self.set_status({DEVICE_STATE: FAN_ON, FAN_SPEED: speed})
+        state = FAN_OFF if speed == SPEED_OFF else FAN_ON
+        self.set_status({DEVICE_STATE: state, FAN_SPEED: speed})
 
     async def async_turn_off(self, **kwargs) -> None:
         """Turn off fan."""

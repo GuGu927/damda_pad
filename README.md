@@ -32,6 +32,7 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 |  v1.5   | 2021.02.10 | fan 버그수정, 코콤 환기장치 버그수정     |
 |  v1.6   | 2021.02.10 | device_registry 관련 수정                |
 |  v1.7   | 2021.02.11 | config_flow 옵션 추가, 코맥스 지원       |
+|  v1.8   | 2021.02.13 | fan 수정, 코맥스 버그 수정               |
 
 <br>
 
@@ -78,7 +79,7 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 ### 현재 가능한 월패드(최신버전 기준)
 
 - 코콤(v1.8)
-- 코맥스(v1.2)
+- 코맥스(v1.3)
 
 <br>
 

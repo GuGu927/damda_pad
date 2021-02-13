@@ -20,7 +20,7 @@ from homeassistant.components.climate.const import (
     SUPPORT_TARGET_TEMPERATURE,
 )
 
-VERSION = "1.7"
+VERSION = "1.8"
 BRAND = "SmartKoreAssistant"
 DOMAIN = "skorea_wallpad"
 NAME = "SKA Wallpad"

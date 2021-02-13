@@ -23,7 +23,7 @@ _LOGGER = logging.getLogger(__name__)
 COMMAX_PTR = re.compile("(..)(..)(..)(..)(..)....(..)")
 
 BRAND = "COMMAX"
-VERSION = "1.2"
+VERSION = "1.3"
 SCAN_LIST = []
 
 STATE_LIGHT = ["b0", "b1"]
@@ -247,7 +247,6 @@ class Main:
         """ Set state from entity """
         device_type = device_id.split("_")[0]
         if device_type in [WPD_GAS] and value == False: return
-        if device_type in [WPD_EV] and value == False: return
         if device_id in self.device:
             self.queue(device_id, sub_id, value)
 
@@ -405,7 +404,7 @@ class Main:
             """ Make packet of fan """
             state = self.get_state(device_id, sub_id)
             cmd, target = None, None
-            if value[DEVICE_STATE] == FAN_ON:
+            if value[FAN_SPEED] != SPEED_OFF:
                 cmd = "01" if state[DEVICE_STATE] == FAN_OFF else "02"
                 target = "04" if state[
                     DEVICE_STATE] == FAN_OFF else "{0:02x}".format(
