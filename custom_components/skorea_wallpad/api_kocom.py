@@ -7,17 +7,17 @@ import threading
 from homeassistant.components.fan import SPEED_HIGH, SPEED_LOW, SPEED_MEDIUM, SPEED_OFF
 from homeassistant.core import callback
 from .const import (
-    PLATFORMS, WPD_MAIN, WPD_DOORLOCK, WPD_EV, WPD_FAN, WPD_GAS, WPD_LIGHT,
-    WPD_MOTION, WPD_SWITCH, WPD_THERMOSTAT, WPD_LIGHTBREAK, WPD_MAIN_LIST,
-    FAN_STATE, FAN_OFF, FAN_ON, FAN_SPEED, THERMO_AWAY, THERMO_HEAT,
-    THERMO_MODE, THERMO_OFF, THERMO_TARGET, THERMO_TEMP, SIGNAL, SEND_INTERVAL,
-    SEND_RETRY, OPT_SEND_RETRY, OPT_SCAN_INT, OPT_SCAN_LIST, OPT_SEND_INT,
-    SCAN_INTERVAL, TICK, DEVICE_STATE, DEVICE_INFO, DEVICE_UNIQUE, DEVICE_ROOM,
-    DEVICE_GET, DEVICE_SET, DEVICE_REG, DEVICE_UNREG, DEVICE_UPDATE,
-    DEVICE_TRY, ENTITY_MAP, DEVICE_ID, DEVICE_NAME, DEVICE_TYPE, DEVICE_SUB,
-    CMD_SCAN, CMD_STATUS, CMD_CHANGE, CMD_ON, CMD_OFF, CMD_DETECT, CLIMATE_DOMAIN,
-    BINARY_SENSOR_DOMAIN, SENSOR_DOMAIN, FAN_DOMAIN, SWITCH_DOMAIN,
-    LIGHT_DOMAIN)
+    PLATFORMS, WPD_MAIN, WPD_DOORLOCK, WPD_EV, WPD_EVSENSOR, WPD_FAN, WPD_GAS,
+    WPD_LIGHT, WPD_MOTION, WPD_SWITCH, WPD_THERMOSTAT, WPD_LIGHTBREAK,
+    WPD_MAIN_LIST, FAN_STATE, FAN_OFF, FAN_ON, FAN_SPEED, THERMO_AWAY,
+    THERMO_HEAT, THERMO_MODE, THERMO_OFF, THERMO_TARGET, THERMO_TEMP, SIGNAL,
+    SEND_INTERVAL, SEND_RETRY, OPT_SEND_RETRY, OPT_SCAN_INT, OPT_SCAN_LIST,
+    OPT_SEND_INT, SCAN_INTERVAL, TICK, DEVICE_STATE, DEVICE_INFO,
+    DEVICE_UNIQUE, DEVICE_ROOM, DEVICE_GET, DEVICE_SET, DEVICE_REG,
+    DEVICE_UNREG, DEVICE_UPDATE, DEVICE_TRY, ENTITY_MAP, DEVICE_ID,
+    DEVICE_NAME, DEVICE_TYPE, DEVICE_SUB, CMD_SCAN, CMD_STATUS, CMD_CHANGE,
+    CMD_ON, CMD_OFF, CMD_DETECT, CLIMATE_DOMAIN, BINARY_SENSOR_DOMAIN,
+    SENSOR_DOMAIN, FAN_DOMAIN, SWITCH_DOMAIN, LIGHT_DOMAIN)
 _LOGGER = logging.getLogger(__name__)
 
 KOCOM_PTR = re.compile(
@@ -230,7 +230,7 @@ class Main:
         """ Insert packet information to queue to send """
         que = {
             TICK: 0,
-            DEVICE_TRY: 0,
+            DEVICE_TRY: 1,
             DEVICE_ID: device_id,
             DEVICE_SUB: sub_id,
             DEVICE_STATE: value
@@ -276,11 +276,12 @@ class Main:
                     device_id = que[DEVICE_ID]
                     sub_id = que[DEVICE_SUB]
                     packet = self.make_packet(device_id, sub_id, value)
-                    if packet is False: count = 6
+                    retry = 5
+                    if packet is False: count = retry + 1
                     _LOGGER.debug(
-                        f'[{BRAND}] Wallpad packet {"send" if count <= 5 else "failed"}{count if count <= 5 else ""} => {device_id} > {sub_id} > {value} > {packet}'
+                        f'[{BRAND}] Wallpad packet {"send" if count <= retry else "failed"}{count if count <= retry else ""} => {device_id} > {sub_id} > {value} > {packet}'
                     )
-                    if count > 5:
+                    if count > retry:
                         if device_id not in self.fail:
                             self.fail[device_id] = 0
                         self.fail[device_id] += 1

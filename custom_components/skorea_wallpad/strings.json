@@ -1,14 +1,18 @@
 {
   "title": "SKA Wallpad",
   "config": {
-    "step": {
-      "confirm": {
-        "description": "[%key:common::config_flow::description::confirm_setup%]"
-      }
-    },
     "abort": {
       "single_instance_allowed": "[%key:common::config_flow::abort::single_instance_allowed%]",
       "no_devices_found": "[%key:common::config_flow::abort::no_devices_found%]"
+    },
+    "step": {
+      "confirm": {
+        "description": "[%key:common::config_flow::description::confirm_setup%]"
+      },
+      "user": {
+        "host": "Host : Socket IP(192.168.x.x) or Serial port(/dev/ttyXXX).",
+        "port": "Port : When host is Socket.(default:8899)"
+      }
     }
   },
   "options": {

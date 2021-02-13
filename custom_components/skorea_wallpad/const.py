@@ -44,10 +44,12 @@ WPD_DOORLOCK = "doorlock"
 WPD_FAN = "fan"
 WPD_GAS = "gas"
 WPD_EV = "elevator"
+WPD_EVSENSOR = "evsensor"
 WPD_MOTION = "motion"
 WPD_LIGHTBREAK = "lightbreak"
 WPD_MAIN_LIST = [
-    WPD_GAS, WPD_EV, WPD_DOORLOCK, WPD_FAN, WPD_MOTION, WPD_LIGHTBREAK
+    WPD_GAS, WPD_EV, WPD_DOORLOCK, WPD_FAN, WPD_MOTION, WPD_LIGHTBREAK,
+    WPD_EVSENSOR
 ]
 
 NEW_LIGHT = "lights"
@@ -131,8 +133,8 @@ OPT_SEND_RETRY = "send_retry"
 OPT_SEND_INT = "send_interval"
 OPT_DEFAULT = [(CONF_HOST, DEFAULT_HOST, cv.string),
                (CONF_PORT, DEFAULT_PORT, cv.port),
-               (OPT_SEND_RETRY, SEND_RETRY, cv.positive_int),
+               (OPT_SEND_RETRY, SEND_RETRY, int_between(1, 20)),
                (OPT_SEND_INT, SEND_INTERVAL, int_between(10, 2000))]
 OPT_KOCOM = [(OPT_SCAN_LIST, SCAN_LIST, cv.multi_select(SCAN_LIST)),
-             (OPT_SCAN_INT, SCAN_INTERVAL, cv.positive_int)]
+             (OPT_SCAN_INT, SCAN_INTERVAL, int_between(1, 20))]
 OPTION_LIST = {"default": OPT_DEFAULT, "kocom": OPT_DEFAULT + OPT_KOCOM}

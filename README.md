@@ -54,7 +54,7 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 
 <br>
 
-### 월패드 별 설정방법
+### 월패드 설정방법
 
 - **코콤** > 월패드에서 조회 혹은 조작하기
 
@@ -78,7 +78,7 @@ Wallpad CustomComponent for Wallpad RS485.<br>
 ### 현재 가능한 월패드(최신버전 기준)
 
 - 코콤(v1.8)
-- 코맥스(v1.0)
+- 코맥스(v1.2)
 
 <br>
 

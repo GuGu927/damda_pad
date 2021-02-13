@@ -2,12 +2,16 @@
   "title": "SKA Wallpad",
   "config": {
     "abort": {
-      "no_devices_found": "No devices found on the network",
-      "single_instance_allowed": "Already configured. Only a single configuration possible."
+      "single_instance_allowed": "Already configured. Only a single configuration possible.",
+      "no_devices_found": "No devices found on the network"
     },
     "step": {
       "confirm": {
         "description": "Do you want to start set up?"
+      },
+      "user": {
+        "host": "Host : Socket IP(192.168.x.x) or Serial port(/dev/ttyXXX).",
+        "port": "Port : When host is Socket.(default:8899)"
       }
     }
   },
