@@ -3,7 +3,7 @@
 ![version](https://img.shields.io/badge/version-2.0-blue)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 
-Wallpad CustomComponent for Wallpad RS485.<br>
+CustomComponent for Wallpad.<br>
 한국의 아파트 홈넷 네트워크(RS485)의 통합연동 및 호환을 위한 위한 프로그램.<br>
 우리집 월패드가 어디껀지 몰라도 알아서 다~~~ 합니다.<br>
 
