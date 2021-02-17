@@ -7,14 +7,15 @@ import re
 
 from .api_kocom import Main as Kocom
 from .api_commax import Main as Commax
+from .api_imazu import Main as Imazu
 from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 
-from .const import (CONF_SOCKET, CONF_HOST, CONF_PORT, CONF_WPD, NAME, DOMAIN,
-                    BRAND, VERSION, MODEL, NEW_LIGHT, NEW_SWITCH, NEW_FAN,
-                    NEW_CLIMATE, NEW_SENSOR, NEW_BSENSOR, RELOAD_SIGNAL,
-                    CLIMATE_DOMAIN, BINARY_SENSOR_DOMAIN, SENSOR_DOMAIN,
-                    FAN_DOMAIN, SWITCH_DOMAIN, LIGHT_DOMAIN)
+from .const import (CONN_STATUS, CONF_SOCKET, CONF_HOST, CONF_PORT, CONF_WPD,
+                    NAME, DOMAIN, BRAND, VERSION, MODEL, NEW_LIGHT, NEW_SWITCH,
+                    NEW_FAN, NEW_CLIMATE, NEW_SENSOR, NEW_BSENSOR,
+                    RELOAD_SIGNAL, CLIMATE_DOMAIN, BINARY_SENSOR_DOMAIN,
+                    SENSOR_DOMAIN, FAN_DOMAIN, SWITCH_DOMAIN, LIGHT_DOMAIN)
 
 _LOGGER = logging.getLogger(__name__)
 ip_regex = "^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$"
@@ -48,9 +49,11 @@ class WallpadGateway:
         self._poll = False
         self.api = None
 
+        self.retry_count = 0
         self.unload_gateway = False
         self.reload = False
         self.available = False
+        self.set_status(False)
 
         self.entities = {
             CLIMATE_DOMAIN: set(),
@@ -61,6 +64,10 @@ class WallpadGateway:
             FAN_DOMAIN: set()
         }
         self.listeners = []
+
+    def set_status(self, v):
+        self.available = v
+        self.hass.data[DOMAIN][CONN_STATUS] = v
 
     @property
     def rs_type(self) -> str:
@@ -161,7 +168,7 @@ class WallpadGateway:
 
     def initialize(self):
         if self._rs485["connect"]:
-            self.available = True
+            self.set_status(True)
             if self.manufacturer is None:
                 self._poll = True
                 self._polling = threading.Thread(target=self.get_socket)
@@ -174,7 +181,8 @@ class WallpadGateway:
         if self.unload_gateway: return
         if self.available:
             self._rs485["connect"].close()
-        self.available = False
+        self.set_status(False)
+
         if self._rs485["type"] == "socket":
             soc = socket.socket()
             soc.setblocking(False)
@@ -210,15 +218,16 @@ class WallpadGateway:
                 )
                 return False
         if self._rs485["connect"] is not None:
-            self.available = True
+            self.retry_count = 0
+            self.set_status(True)
             return True
         return False
 
     def retry(self):
         if self.unload_gateway: return
         _LOGGER.info(f"[{BRAND}] {self._rs485['type']} 에러. 재시작합니다.")
-        if not self.connect():
-            time.sleep(60)
+        if not self.connect() and self.retry_count < 5:
+            self.retry_count += 1
             self.retry()
 
     @callback
@@ -226,7 +235,7 @@ class WallpadGateway:
         if self._rs485["connect"]:
             _LOGGER.info(f"[{BRAND}] {self._rs485['type']} 종료.")
             self.unload_gateway = True
-            self.available = False
+            self.set_status(False)
             self._rs485["connect"].close()
             self._rs485["connect"] = None
 
@@ -262,16 +271,17 @@ class WallpadGateway:
 
     def set_wallpad(self, wallpad=None, config=False):
         if wallpad == "kocom":
-            self.api = Kocom(self.hass, self.entry, self.entities, self.write,
-                             self.async_add_device_callback)
+            self.api = Kocom(
+                self.hass, self.entry, self.entities, self.write,
+                self.async_add_device_callback) if config == False else True
         elif wallpad == "commax":
-            self.api = Commax(self.hass, self.entry, self.entities, self.write,
-                              self.async_add_device_callback)
-        if self._poll == False:
-            self._poll = True
-            self._polling = threading.Thread(target=self.get_socket)
-            self._polling.daemon = True
-            self._polling.start()
+            self.api = Commax(
+                self.hass, self.entry, self.entities, self.write,
+                self.async_add_device_callback) if config == False else True
+        elif wallpad == "imazu":
+            self.api = Imazu(
+                self.hass, self.entry, self.entities, self.write,
+                self.async_add_device_callback) if config == False else True
         if self.api is not None:
             _LOGGER.info(f"[{BRAND}] 월패드 로딩완료 => {wallpad}")
             if config:
@@ -282,6 +292,12 @@ class WallpadGateway:
                         **self.entry.data, CONF_WPD: wallpad
                     })
                 self.reload = True
+                return
+        if self._poll == False:
+            self._poll = True
+            self._polling = threading.Thread(target=self.get_socket)
+            self._polling.daemon = True
+            self._polling.start()
 
     def get_socket(self):
         while (True and self.unload_gateway is False and self.reload is False):
@@ -291,6 +307,7 @@ class WallpadGateway:
                 elif self.api is not None:
                     self.poll()
         if self.reload:
+            time.sleep(10)
             async_dispatcher_send(self.hass, RELOAD_SIGNAL, self.hass,
                                   self.entry)
         else:
@@ -303,7 +320,8 @@ class WallpadGateway:
         finding = ["aa", "f7", "b0", "90", "ac", "ae", "ad"]
         kocom = ["aa55"]
         cvnet = ["f720"]
-        ezville = ["f70e", "f736", "f732", "f73a", "f733"]
+        kdone = ["f712"]
+        ezville = ["f736", "f732", "f73a", "f733"]
         commax = [
             "b000", "b001", "8280", "8281", "8284", "f600", "f602", "f604",
             "f606", "9048", "9040", "9080", "9050", "90a0", "f900", "f901",
@@ -312,7 +330,7 @@ class WallpadGateway:
         samsungsds = [
             "ac79", "b079", "ae7c", "b07c", "c24e", "b04e", "ad41", "b041"
         ]
-        imazu = ["f70d", "f70b", "f70c", "f722", "f70e"]
+        imazu = ["f70d", "f70b", "f70c", "f722"]
         bestin = []
         while target == "":
             row_data = self.read()
@@ -336,6 +354,8 @@ class WallpadGateway:
                         target = "samsungsds"
                     elif joindata in imazu:
                         target = "imazu"
+                    elif joindata in kdone:
+                        target = "kdone"
                     buf = []
                     start_flag = False
         if target != "":

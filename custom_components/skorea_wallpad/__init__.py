@@ -50,15 +50,18 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
     """Unload a config entry."""
-    unload_ok = all(await asyncio.gather(*[
-        hass.config_entries.async_forward_entry_unload(entry, component)
-        for component in PLATFORMS
-    ]))
-    if unload_ok:
+    try:
         hass.data[DOMAIN][entry.unique_id].stop(False)
-        hass.data[DOMAIN].pop(entry.unique_id)
+        unload_ok = all(await asyncio.gather(*[
+            hass.config_entries.async_forward_entry_unload(entry, component)
+            for component in PLATFORMS
+        ]))
+        if unload_ok:
+            hass.data[DOMAIN].pop(entry.unique_id)
 
-    return unload_ok
+        return unload_ok
+    except:
+        return True
 
 
 async def async_migrate_entry(hass, config_entry: ConfigEntry):

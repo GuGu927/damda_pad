@@ -7,23 +7,25 @@ import threading
 from homeassistant.components.fan import SPEED_HIGH, SPEED_LOW, SPEED_MEDIUM, SPEED_OFF
 from homeassistant.core import callback
 from .const import (
-    PLATFORMS, WPD_MAIN, WPD_DOORLOCK, WPD_EV, WPD_EVSENSOR, WPD_FAN, WPD_GAS,
-    WPD_LIGHT, WPD_MOTION, WPD_SWITCH, WPD_THERMOSTAT, WPD_LIGHTBREAK,
-    WPD_MAIN_LIST, FAN_STATE, FAN_OFF, FAN_ON, FAN_SPEED, THERMO_AWAY,
-    THERMO_HEAT, THERMO_MODE, THERMO_OFF, THERMO_TARGET, THERMO_TEMP, SIGNAL,
-    SEND_INTERVAL, SEND_RETRY, OPT_SEND_RETRY, OPT_SCAN_INT, OPT_SCAN_LIST,
-    OPT_SEND_INT, SCAN_INTERVAL, TICK, DEVICE_STATE, DEVICE_INFO,
-    DEVICE_UNIQUE, DEVICE_ROOM, DEVICE_GET, DEVICE_SET, DEVICE_REG,
-    DEVICE_UNREG, DEVICE_UPDATE, DEVICE_TRY, ENTITY_MAP, DEVICE_ID,
-    DEVICE_NAME, DEVICE_TYPE, DEVICE_SUB, CMD_SCAN, CMD_STATUS, CMD_CHANGE,
-    CMD_ON, CMD_OFF, CMD_DETECT, CLIMATE_DOMAIN, BINARY_SENSOR_DOMAIN,
-    SENSOR_DOMAIN, FAN_DOMAIN, SWITCH_DOMAIN, LIGHT_DOMAIN)
+    DOMAIN, CONN_STATUS, PLATFORMS, WPD_MAIN, WPD_DOORLOCK, WPD_EV,
+    WPD_EVSENSOR, WPD_FAN, WPD_GAS, WPD_LIGHT, WPD_POWER, WPD_MOTION,
+    WPD_SWITCH, WPD_THERMOSTAT, WPD_LIGHTBREAK, WPD_AWAYMODE, WPD_GUARD,
+    WPD_USAGE, WPD_MAIN_LIST, FAN_STATE, FAN_OFF, FAN_ON, FAN_SPEED,
+    THERMO_AWAY, THERMO_HEAT, THERMO_MODE, THERMO_OFF, THERMO_TARGET,
+    THERMO_TEMP, SIGNAL, SEND_INTERVAL, SEND_RETRY, OPT_SEND_RETRY,
+    OPT_SCAN_INT, OPT_SCAN_LIST, OPT_SEND_INT, SCAN_LIST, SCAN_INTERVAL, TICK,
+    DEVICE_STATE, DEVICE_INFO, DEVICE_UNIQUE, DEVICE_ROOM, DEVICE_GET,
+    DEVICE_SET, DEVICE_REG, DEVICE_UNREG, DEVICE_UPDATE, DEVICE_TRY,
+    ENTITY_MAP, DEVICE_ID, DEVICE_NAME, DEVICE_TYPE, DEVICE_SUB, CMD_SCAN,
+    CMD_STATUS, CMD_CHANGE, CMD_ON, CMD_OFF, CMD_DETECT, CLIMATE_DOMAIN,
+    BINARY_SENSOR_DOMAIN, SENSOR_DOMAIN, FAN_DOMAIN, SWITCH_DOMAIN,
+    LIGHT_DOMAIN)
 _LOGGER = logging.getLogger(__name__)
 
 COMMAX_PTR = re.compile("(..)(..)(..)(..)(..)....(..)")
 
 BRAND = "COMMAX"
-VERSION = "1.3"
+VERSION = "1.0"
 SCAN_LIST = []
 
 STATE_LIGHT = ["b0", "b1"]
@@ -36,15 +38,15 @@ STATE_GAS = ["90", "91"]
 CMD_GAS = "11"  # scan 10
 STATE_FAN = ["f6", "f8"]
 CMD_FAN = "78"  # scan 76
-STATE_LIGHTBREAK = ["a0", "a2"]
-CMD_LIGHTBREAK = "22"  # scan 21
+STATE_LBREAK = ["a0", "a2"]
+CMD_LBREAK = "22"  # scan 21
 STATE_EV = ["23", "22"]
 CMD_EV = "a0"
 ENTITY_MAP["evsensor"] = SENSOR_DOMAIN
 
-STATE_PACKET = STATE_LIGHT + STATE_SWITCH + STATE_FAN + STATE_THERMO + STATE_GAS + STATE_LIGHTBREAK + STATE_EV
+STATE_PACKET = STATE_LIGHT + STATE_SWITCH + STATE_FAN + STATE_THERMO + STATE_GAS + STATE_LBREAK + STATE_EV
 CMD_PACKET = [
-    CMD_LIGHT, CMD_SWITCH, CMD_THERMO, CMD_GAS, CMD_FAN, CMD_LIGHTBREAK, CMD_EV
+    CMD_LIGHT, CMD_SWITCH, CMD_THERMO, CMD_GAS, CMD_FAN, CMD_LBREAK, CMD_EV
 ]
 PACKET_LEN = 8
 STATE_VALUE = {
@@ -91,13 +93,12 @@ class Main:
         self.packet_que = []
         self.device = {}
         self.unique = {}
-        self.fail = {}
-        self.avg_tick = 10
 
         self._que = threading.Thread(target=self.loop)
         self._que.daemon = True
         self._que.start()
 
+        self.avg_tick = 10
         self.thermo_mode = THERMO
         for mode, packet in THERMO.items():
             if self.get_data(mode):
@@ -105,8 +106,12 @@ class Main:
         self._packet = []
         self._flag = False
 
-    def set_tick(self):
-        self.tick = time.time()
+    @property
+    def available(self):
+        return self.hass.data[DOMAIN][CONN_STATUS]
+
+    def set_tick(self, offset=0):
+        self.tick = time.time() + offset
 
     def get_data(self, name, default=False):
         return self.entry.data.get(name, default)
@@ -256,21 +261,20 @@ class Main:
         And scan wallpad when init.
         """
         while True:
-            if len(self.packet_que) > 0:
+            if len(self.packet_que) > 0 and self.available:
                 now = time.time()
                 que = False
-                interval = (self.get_option(OPT_SEND_INT, SEND_INTERVAL) /
-                            1000)
                 try:
                     que = self.packet_que[0]
                 except:
                     continue
+                interval = self.get_option(OPT_SEND_INT, SEND_INTERVAL) / 1000
+                value = que[DEVICE_STATE]
                 if (que and now - self.tick < self.avg_tick / 1000
                         and now - que[TICK] > interval):
                     count = que[DEVICE_TRY]
                     device_id = que[DEVICE_ID]
                     sub_id = que[DEVICE_SUB]
-                    value = que[DEVICE_STATE]
                     packet = self.make_packet(device_id, sub_id, value)
                     retry = self.get_option(OPT_SEND_RETRY, SEND_RETRY)
                     if packet is False: count = retry + 1
@@ -278,16 +282,13 @@ class Main:
                         f'[{BRAND}] Wallpad packet {"send" if count <= retry else "failed"}{count if count <= retry else ""} => {device_id} > {sub_id} > {value} > {packet}'
                     )
                     if count > retry:
-                        if device_id not in self.fail:
-                            self.fail[device_id] = 0
-                        self.fail[device_id] += 1
-                        self.device[device_id][TICK] = time.time()
+                        self.device[device_id][TICK] = now
                         self.deque()
                     else:
                         que[TICK] = now
                         que[DEVICE_TRY] += 1
                         self.write(packet)
-            else:
+            elif self.available:
                 now = time.time()
                 dev = self.device.copy()
                 for device_id, device in dev.items():
@@ -307,7 +308,6 @@ class Main:
         device_type = device_id.split("_")[0]
         wpd_to_entity = ENTITY_MAP[device_type]
         add_device = SIGNAL[wpd_to_entity]
-        if device_id in self.fail: self.fail[device_id] = 0
 
         def add(did, sid, value):
             if did is None: return
@@ -318,7 +318,8 @@ class Main:
         def update(did, sid, old, new):
             if did is None: return
             unique_id = f"{did}_{sid}"
-            if (self.unique.get(unique_id) and old.get(sid) != new):
+            if (self.unique.get(unique_id, None)
+                    and old.get(sid, None) != new):
                 update = self.unique[unique_id][DEVICE_UPDATE]
                 if update is not None: update()
 
@@ -422,8 +423,8 @@ class Main:
             """ Make packet of ev """
             return "a0010100081500"
 
-        def make_lightbreak():
-            """ Make packet of ev """
+        def make_lbreak():
+            """ Make packet of lightbreak """
             if value:
                 return "22010001000000"
             else:
@@ -442,7 +443,7 @@ class Main:
         elif device == WPD_EV:
             packet_str = make_ev()
         elif device == WPD_LIGHTBREAK:
-            packet_str = make_lightbreak()
+            packet_str = make_lbreak()
 
         if packet_str is None: return False
         try:
@@ -521,8 +522,8 @@ class Main:
             device_id = f"{WPD_GAS}_01"
             return device_id, not STATE_VALUE[p1]
 
-        def parse_lightbreak(p1, p2):
-            """ Parse lightbreak """
+        def parse_lbreak(p1, p2):
+            """ Parse light break """
             device_id = f"{WPD_LIGHTBREAK}_{p2}"
             return device_id, not STATE_VALUE[p1]
 
@@ -549,8 +550,8 @@ class Main:
                 device_id, state = parse_fan(p[1], p[2], p[3])
             elif device in STATE_THERMO:
                 device_id, state = parse_thermostat(p[1], p[2], p[3], p[4])
-            elif device in STATE_LIGHTBREAK:
-                device_id, state = parse_lightbreak(p[1], p[2])
+            elif device in STATE_LBREAK:
+                device_id, state = parse_lbreak(p[1], p[2])
             elif device in STATE_EV:
                 if device == "22":
                     device_id, state = parse_ev_onoff(packet)
@@ -558,7 +559,7 @@ class Main:
                     device_id, state = parse_ev_floor(p[1], p[2])
             elif device in [
                     CMD_GAS, CMD_SWITCH, CMD_LIGHT, CMD_FAN, CMD_THERMO,
-                    CMD_LIGHTBREAK, CMD_EV
+                    CMD_LBREAK, CMD_EV
             ]:
                 if device == CMD_THERMO:
                     detect_thermostat(p[2], p[3])

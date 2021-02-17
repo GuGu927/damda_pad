@@ -1,29 +1,32 @@
 """Support for wallpad sensors."""
 from homeassistant.components.sensor import DOMAIN
-from homeassistant.const import (
-    ATTR_TEMPERATURE,
-    DEVICE_CLASS_POWER,
-    DEVICE_CLASS_TEMPERATURE,
-    ENERGY_KILO_WATT_HOUR,
-    POWER_WATT,
-    TEMP_CELSIUS,
-)
+from homeassistant.const import (ATTR_TEMPERATURE, DEVICE_CLASS_POWER,
+                                 DEVICE_CLASS_TEMPERATURE,
+                                 ENERGY_KILO_WATT_HOUR, POWER_WATT,
+                                 TEMP_CELSIUS, VOLUME_CUBIC_METERS)
 from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
-from .const import NEW_SENSOR, DEVICE_UNIQUE
+from .const import NEW_SENSOR, DEVICE_UNIQUE, WPD_EVSENSOR
 from .wallpad_device import WallpadDevice
 from .gateway import get_wallpad
 
 DEVICE_CLASS = {
-    "Power": DEVICE_CLASS_POWER,
-    "Temperature": DEVICE_CLASS_TEMPERATURE,
+    "power": DEVICE_CLASS_POWER,
+    "temperature": DEVICE_CLASS_TEMPERATURE,
+}
+
+ICON = {
+    WPD_EVSENSOR: "mdi:elevator",
 }
 
 UNIT_OF_MEASUREMENT = {
-    "Consumption": ENERGY_KILO_WATT_HOUR,
-    "Power": POWER_WATT,
-    "Temperature": TEMP_CELSIUS,
+    "consumption": ENERGY_KILO_WATT_HOUR,
+    "power": POWER_WATT,
+    "temperature": TEMP_CELSIUS,
+    "gas": VOLUME_CUBIC_METERS,
+    "water": VOLUME_CUBIC_METERS,
+    WPD_EVSENSOR: "층",
 }
 
 
@@ -34,9 +37,12 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
     @callback
     def async_add_sensor(
-            devices=gateway.api.sensors() if gateway.api is not None else []):
+        devices=get_wallpad(hass, config_entry).api.sensors()
+        if get_wallpad(hass, config_entry).api is not None
+        and not isinstance(get_wallpad(hass, config_entry).api, bool) else []):
         """Add sensor from wallpad."""
         entities = []
+        gateway = get_wallpad(hass, config_entry)
         for device in devices:
             if (not gateway.entities[DOMAIN + "load"]
                     or device[DEVICE_UNIQUE] not in gateway.entities[DOMAIN]):
@@ -65,11 +71,18 @@ class WallpadSensor(WallpadDevice):
         return self.get_status()
 
     @property
+    def icon(self):
+        """Return the icon of the sensor."""
+        return ICON.get(self.device_type, ICON.get(self.device_room))
+
+    @property
     def device_class(self):
         """Return the class of the sensor."""
-        return DEVICE_CLASS.get(type(self._device))
+        return DEVICE_CLASS.get(self.device_type,
+                                DEVICE_CLASS.get(self.device_room))
 
     @property
     def unit_of_measurement(self):
         """Return the unit of measurement of this sensor."""
-        return UNIT_OF_MEASUREMENT.get(type(self._device))
+        return UNIT_OF_MEASUREMENT.get(
+            self.device_type, UNIT_OF_MEASUREMENT.get(self.device_room))

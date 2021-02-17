@@ -10,8 +10,11 @@
         "description": "Do you want to start set up?"
       },
       "user": {
-        "host": "Host : Socket IP(192.168.x.x) or Serial port(/dev/ttyXXX).",
-        "port": "Port : When host is Socket.(default:8899)"
+        "description": "Write your device's host address.",
+        "data": {
+          "host": "Host : Socket IP(192.168.x.x) or Serial port(/dev/ttyXXX).",
+          "port": "Port : When host is Socket.(default:8899)"
+        }
       }
     }
   },
@@ -24,7 +27,7 @@
           "port": "Port : When host is Socket.(default:8899)",
           "scan_list": "Scan List : Scan selected device with scan interval.",
           "scan_interval": "Scan Interval : Interval between wallpad scan.(sec)",
-          "send_retry": "Send Retry : If send fails x times, add device to ignore list.",
+          "send_retry": "Send Retry : If send fails x times, remove from queue.",
           "send_interval": "Send Interval : Interval between packet send.(millisecond)"
         }
       }

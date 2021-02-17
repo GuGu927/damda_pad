@@ -25,9 +25,12 @@ async def async_setup_entry(hass, config_entry, async_add_entities) -> None:
 
     @callback
     def async_add_fan(
-            devices=gateway.api.fans() if gateway.api is not None else []):
+        devices=get_wallpad(hass, config_entry).api.fans()
+        if get_wallpad(hass, config_entry).api is not None
+        and not isinstance(get_wallpad(hass, config_entry).api, bool) else []):
         """Add fan from wallpad."""
         entities = []
+        gateway = get_wallpad(hass, config_entry)
         for device in devices:
             if (not gateway.entities[DOMAIN + "load"]
                     or device[DEVICE_UNIQUE] not in gateway.entities[DOMAIN]):
@@ -65,7 +68,9 @@ class WallpadFan(WallpadDevice, FanEntity):
     def speed(self) -> int:
         """Return the current speed."""
         status = self.get_status()
-        if status is not None: return status.get(FAN_SPEED)
+        if status is not None:
+            return status.get(FAN_SPEED) if FAN_ON == status.get(
+                DEVICE_STATE) else SPEED_OFF
 
     @property
     def speed_list(self) -> list:

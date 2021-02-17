@@ -20,7 +20,7 @@ from homeassistant.components.climate.const import (
     SUPPORT_TARGET_TEMPERATURE,
 )
 
-VERSION = "1.8"
+VERSION = "2.0"
 BRAND = "SmartKoreAssistant"
 DOMAIN = "skorea_wallpad"
 NAME = "SKA Wallpad"
@@ -31,6 +31,7 @@ PLATFORMS = [
     SENSOR_DOMAIN, SWITCH_DOMAIN
 ]
 
+CONN_STATUS = "connection"
 CONF_SOCKET, DEFAULT_SOCKET = "socket", "192.168.x.x"
 CONF_HOST, DEFAULT_HOST = "host", "192.168.x.x or /dev/ttyXXX"
 CONF_PORT, DEFAULT_PORT = "port", 8899
@@ -39,6 +40,7 @@ CONF_WPD = "wallpad"
 WPD_MAIN = "wallpad"
 WPD_LIGHT = "light"
 WPD_SWITCH = "outlet"
+WPD_POWER = "power"
 WPD_THERMOSTAT = "thermostat"
 WPD_DOORLOCK = "doorlock"
 WPD_FAN = "fan"
@@ -46,10 +48,13 @@ WPD_GAS = "gas"
 WPD_EV = "elevator"
 WPD_EVSENSOR = "evsensor"
 WPD_MOTION = "motion"
+WPD_AWAYMODE = "away"
 WPD_LIGHTBREAK = "lightbreak"
+WPD_GUARD = "guard"
+WPD_USAGE = "usage"
 WPD_MAIN_LIST = [
-    WPD_GAS, WPD_EV, WPD_DOORLOCK, WPD_FAN, WPD_MOTION, WPD_LIGHTBREAK,
-    WPD_EVSENSOR
+    WPD_GAS, WPD_EV, WPD_DOORLOCK, WPD_FAN, WPD_MOTION, WPD_AWAYMODE,
+    WPD_LIGHTBREAK, WPD_EVSENSOR, WPD_USAGE
 ]
 
 NEW_LIGHT = "lights"
@@ -76,13 +81,16 @@ THERMO_TEMP = "temperature"
 ENTITY_MAP = {
     WPD_LIGHT: LIGHT_DOMAIN,
     WPD_LIGHTBREAK: LIGHT_DOMAIN,
+    WPD_POWER: SENSOR_DOMAIN,
     WPD_SWITCH: SWITCH_DOMAIN,
+    WPD_AWAYMODE: SWITCH_DOMAIN,
     WPD_THERMOSTAT: CLIMATE_DOMAIN,
     WPD_GAS: SWITCH_DOMAIN,
     WPD_EV: SWITCH_DOMAIN,
     WPD_FAN: FAN_DOMAIN,
     WPD_MOTION: BINARY_SENSOR_DOMAIN,
-    WPD_DOORLOCK: SWITCH_DOMAIN
+    WPD_DOORLOCK: SWITCH_DOMAIN,
+    WPD_USAGE: SENSOR_DOMAIN
 }
 
 TICK = "tick"
@@ -123,7 +131,9 @@ def int_between(min_int, max_int):
     return vol.All(vol.Coerce(int), vol.Range(min=min_int, max=max_int))
 
 
-SCAN_LIST = [WPD_LIGHT, WPD_SWITCH, WPD_THERMOSTAT, WPD_GAS, WPD_FAN]
+SCAN_LIST = [
+    WPD_LIGHT, WPD_SWITCH, WPD_THERMOSTAT, WPD_GAS, WPD_FAN, WPD_USAGE
+]
 SEND_RETRY = 5
 SEND_INTERVAL = 300
 SCAN_INTERVAL = 6 * 60
@@ -135,6 +145,10 @@ OPT_DEFAULT = [(CONF_HOST, DEFAULT_HOST, cv.string),
                (CONF_PORT, DEFAULT_PORT, cv.port),
                (OPT_SEND_RETRY, SEND_RETRY, int_between(1, 20)),
                (OPT_SEND_INT, SEND_INTERVAL, int_between(10, 2000))]
-OPT_KOCOM = [(OPT_SCAN_LIST, SCAN_LIST, cv.multi_select(SCAN_LIST)),
-             (OPT_SCAN_INT, SCAN_INTERVAL, int_between(1, 20))]
-OPTION_LIST = {"default": OPT_DEFAULT, "kocom": OPT_DEFAULT + OPT_KOCOM}
+OPT_SCAN = [(OPT_SCAN_LIST, SCAN_LIST, cv.multi_select(SCAN_LIST)),
+            (OPT_SCAN_INT, SCAN_INTERVAL, int_between(60, 3600))]
+OPTION_LIST = {
+    "default": OPT_DEFAULT,
+    "kocom": OPT_DEFAULT + OPT_SCAN,
+    "imazu": OPT_DEFAULT + OPT_SCAN
+}

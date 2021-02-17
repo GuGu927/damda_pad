@@ -7,17 +7,19 @@ import threading
 from homeassistant.components.fan import SPEED_HIGH, SPEED_LOW, SPEED_MEDIUM, SPEED_OFF
 from homeassistant.core import callback
 from .const import (
-    PLATFORMS, WPD_MAIN, WPD_DOORLOCK, WPD_EV, WPD_EVSENSOR, WPD_FAN, WPD_GAS,
-    WPD_LIGHT, WPD_MOTION, WPD_SWITCH, WPD_THERMOSTAT, WPD_LIGHTBREAK,
-    WPD_MAIN_LIST, FAN_STATE, FAN_OFF, FAN_ON, FAN_SPEED, THERMO_AWAY,
-    THERMO_HEAT, THERMO_MODE, THERMO_OFF, THERMO_TARGET, THERMO_TEMP, SIGNAL,
-    SEND_INTERVAL, SEND_RETRY, OPT_SEND_RETRY, OPT_SCAN_INT, OPT_SCAN_LIST,
-    OPT_SEND_INT, SCAN_INTERVAL, TICK, DEVICE_STATE, DEVICE_INFO,
-    DEVICE_UNIQUE, DEVICE_ROOM, DEVICE_GET, DEVICE_SET, DEVICE_REG,
-    DEVICE_UNREG, DEVICE_UPDATE, DEVICE_TRY, ENTITY_MAP, DEVICE_ID,
-    DEVICE_NAME, DEVICE_TYPE, DEVICE_SUB, CMD_SCAN, CMD_STATUS, CMD_CHANGE,
-    CMD_ON, CMD_OFF, CMD_DETECT, CLIMATE_DOMAIN, BINARY_SENSOR_DOMAIN,
-    SENSOR_DOMAIN, FAN_DOMAIN, SWITCH_DOMAIN, LIGHT_DOMAIN)
+    DOMAIN, CONN_STATUS, PLATFORMS, WPD_MAIN, WPD_DOORLOCK, WPD_EV,
+    WPD_EVSENSOR, WPD_FAN, WPD_GAS, WPD_LIGHT, WPD_POWER, WPD_MOTION,
+    WPD_SWITCH, WPD_THERMOSTAT, WPD_LIGHTBREAK, WPD_AWAYMODE, WPD_GUARD,
+    WPD_USAGE, WPD_MAIN_LIST, FAN_STATE, FAN_OFF, FAN_ON, FAN_SPEED,
+    THERMO_AWAY, THERMO_HEAT, THERMO_MODE, THERMO_OFF, THERMO_TARGET,
+    THERMO_TEMP, SIGNAL, SEND_INTERVAL, SEND_RETRY, OPT_SEND_RETRY,
+    OPT_SCAN_INT, OPT_SCAN_LIST, OPT_SEND_INT, SCAN_LIST, SCAN_INTERVAL, TICK,
+    DEVICE_STATE, DEVICE_INFO, DEVICE_UNIQUE, DEVICE_ROOM, DEVICE_GET,
+    DEVICE_SET, DEVICE_REG, DEVICE_UNREG, DEVICE_UPDATE, DEVICE_TRY,
+    ENTITY_MAP, DEVICE_ID, DEVICE_NAME, DEVICE_TYPE, DEVICE_SUB, CMD_SCAN,
+    CMD_STATUS, CMD_CHANGE, CMD_ON, CMD_OFF, CMD_DETECT, CLIMATE_DOMAIN,
+    BINARY_SENSOR_DOMAIN, SENSOR_DOMAIN, FAN_DOMAIN, SWITCH_DOMAIN,
+    LIGHT_DOMAIN)
 _LOGGER = logging.getLogger(__name__)
 
 KOCOM_PTR = re.compile(
@@ -27,8 +29,7 @@ THERMO_PTR = re.compile("(.)..(.)(..)..(..)......")
 FAN_PTR = re.compile("(..)..(.)...........")
 
 BRAND = "KOCOM"
-VERSION = "1.8"
-SCAN_LIST = [WPD_LIGHT, WPD_SWITCH, WPD_THERMOSTAT, WPD_GAS, WPD_FAN]
+VERSION = "1.0"
 
 WPD_DEVICE = {
     "00": WPD_MAIN,
@@ -89,7 +90,6 @@ class Main:
         self.packet_que = []
         self.device = {}
         self.unique = {}
-        self.fail = {}
 
         self._que = threading.Thread(target=self.loop)
         self._que.daemon = True
@@ -103,8 +103,12 @@ class Main:
         self._packet = []
         self._flag = False
 
-    def set_tick(self):
-        self.tick = time.time()
+    @property
+    def available(self):
+        return self.hass.data[DOMAIN][CONN_STATUS]
+
+    def set_tick(self, offset=0):
+        self.tick = time.time() + offset
 
     def get_data(self, name, default=False):
         return self.entry.data.get(name, default)
@@ -235,9 +239,6 @@ class Main:
             DEVICE_SUB: sub_id,
             DEVICE_STATE: value
         }
-        if device_id in self.fail and self.fail[device_id] > self.get_option(
-                OPT_SEND_RETRY, SEND_RETRY):
-            return
         self.packet_que.append(que)
 
     @callback
@@ -260,38 +261,35 @@ class Main:
         And scan wallpad when init.
         """
         while True:
-            if len(self.packet_que) > 0:
+            if len(self.packet_que) > 0 and self.available:
                 now = time.time()
                 que = False
                 try:
                     que = self.packet_que[0]
                 except:
                     continue
+                interval = self.get_option(OPT_SEND_INT, SEND_INTERVAL) / 1000
                 value = que[DEVICE_STATE]
-                interval = self.get_option(OPT_SEND_INT, SEND_INTERVAL)
                 if value == CMD_SCAN: interval = interval * 3
-                if (que and now - self.tick > interval / 1000
-                        and now - que[TICK] > interval / 1000):
+                if (que and now - self.tick > interval
+                        and now - que[TICK] > interval):
                     count = que[DEVICE_TRY]
                     device_id = que[DEVICE_ID]
                     sub_id = que[DEVICE_SUB]
                     packet = self.make_packet(device_id, sub_id, value)
-                    retry = 5
+                    retry = self.get_option(OPT_SEND_RETRY, SEND_RETRY)
                     if packet is False: count = retry + 1
                     _LOGGER.debug(
                         f'[{BRAND}] Wallpad packet {"send" if count <= retry else "failed"}{count if count <= retry else ""} => {device_id} > {sub_id} > {value} > {packet}'
                     )
                     if count > retry:
-                        if device_id not in self.fail:
-                            self.fail[device_id] = 0
-                        self.fail[device_id] += 1
-                        self.device[device_id][TICK] = time.time()
+                        self.device[device_id][TICK] = now
                         self.deque()
                     else:
                         que[TICK] = now
                         que[DEVICE_TRY] += 1
                         self.write(packet)
-            else:
+            elif self.available:
                 now = time.time()
                 dev = self.device.copy()
                 for device_id, device in dev.items():
@@ -311,7 +309,6 @@ class Main:
         device_type = device_id.split("_")[0]
         wpd_to_entity = ENTITY_MAP[device_type]
         add_device = SIGNAL[wpd_to_entity]
-        if device_id in self.fail: self.fail[device_id] = 0
 
         def add(did, sid, value):
             """ Add device to entities """
@@ -469,8 +466,6 @@ class Main:
 
     def parse(self, packet):
         """ Parse packet """
-        self.set_tick()
-
         def parse_switch(packet_value):
             """ Parse switch/light """
             state = {}
@@ -513,8 +508,7 @@ class Main:
                 THERMO_TARGET: target,
                 THERMO_TEMP: temperature
             }
-            if (device_id in self.last_target
-                    and self.last_target[device_id] != target):
+            if (self.last_target.get(device_id, target) != target):
                 self.last_target[device_id] = target
                 self.hass.config_entries.async_update_entry(
                     entry=self.entry,
@@ -547,13 +541,13 @@ class Main:
         }
         wpd, dst, src = ["0000", "0100"], p["dd"] + p["dr"], p["sd"] + p["sr"]
         cmd = CMD[p["cmd"]] if p["cmd"] in CMD else False
+        device_id, value = None, None
         if p["pt"] == "d" and src in wpd:
             _LOGGER.debug(
                 f'[{BRAND}] Wallpad packet income [{src} -> {dst}] [{cmd}] [{p["value"]}] => {packet}'
             )
             device = WPD_DEVICE[p["dd"]] if p["dd"] in WPD_DEVICE else False
             room = p["dr"]
-            value = None
             device_id = f'{device}_{room}'
             if device and cmd == CMD_STATUS:
                 if device in [WPD_LIGHT, WPD_SWITCH]:
@@ -566,34 +560,26 @@ class Main:
                 value = {DEVICE_STATE: cmd != CMD_ON}
             elif device == WPD_MOTION and cmd == CMD_DETECT:
                 value = {DEVICE_STATE: p["value"] != "0100000000000000"}
-            if value is not None:
-                self.set_device(device_id, value, packet)
         elif p["pt"] == "b" and dst in wpd:
             _LOGGER.debug(
                 f'[{BRAND}] Wallpad packet income [{src} -> {dst}] [{cmd}] [{p["value"]}] => {packet}'
             )
             device = WPD_DEVICE[p["sd"]] if p["sd"] in WPD_DEVICE else False
             room = p["sr"]
-            value = None
             device_id = f'{device}_{room}'
             if device == WPD_EV and cmd == CMD_ON:
                 value = {DEVICE_STATE: True}
-            if value is not None:
-                self.set_device(device_id, value, packet)
         elif p["pt"] == "b" and src in wpd:
             _LOGGER.debug(
                 f'[{BRAND}] Wallpad packet income [{src} -> {dst}] [{cmd}] [{p["value"]}] => {packet}'
             )
             device = WPD_DEVICE[p["dd"]] if p["dd"] in WPD_DEVICE else False
             room = p["dr"]
-            value = None
             device_id = f'{device}_{room}'
             if device and cmd == CMD_SCAN:
                 _LOGGER.debug(f"[{BRAND}] Wallpad device scan => {device_id}")
             elif device == WPD_EV and cmd == CMD_ON:
                 value = {DEVICE_STATE: False}
-            if value is not None:
-                self.set_device(device_id, value, packet)
         elif p["pt"] == "9" and src in wpd:
             _LOGGER.debug(
                 f'[{BRAND}] Wallpad packet income [{src} -> {dst}] [{cmd}] [{p["value"]}] => {packet}'
@@ -602,12 +588,16 @@ class Main:
             room = p["dr"]
             value = {DEVICE_STATE: cmd == "65"}
             device_id = f'{device}_{room}'
-            self.set_device(device_id, value, packet)
         elif (not WPD_DEVICE.get(p["dd"]) or not WPD_DEVICE.get(p["sd"])
               or not CMD.get(p["cmd"])):
             _LOGGER.info(
                 f'[{BRAND}] Wallpad packet discovery [{src} -> {dst}] [{cmd}] [{p["value"]}] => {packet}'
             )
+        if device_id is not None and value is not None:
+            self.set_tick(-self.get_option(OPT_SEND_INT, SEND_INTERVAL) / 1000)
+            self.set_device(device_id, value, packet)
+        else:
+            self.set_tick()
 
     def poll(self, p):
         """ Get packet from tcp/ip socket and validate checksum. """

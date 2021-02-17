@@ -21,9 +21,12 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
     @callback
     def async_add_switch(
-            devices=gateway.api.switchs() if gateway.api is not None else []):
+        devices=get_wallpad(hass, config_entry).api.switchs()
+        if get_wallpad(hass, config_entry).api is not None
+        and not isinstance(get_wallpad(hass, config_entry).api, bool) else []):
         """Add switch from Wallpad."""
         entities = []
+        gateway = get_wallpad(hass, config_entry)
         for device in devices:
             if (not gateway.entities[DOMAIN + "load"]
                     or device[DEVICE_UNIQUE] not in gateway.entities[DOMAIN]):
