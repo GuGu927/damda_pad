@@ -35,13 +35,13 @@ DamdaPad<br>
 ### HACS
 
 - HACS > Integretions > 우측상단 메뉴 > `Custom repositories` 선택
-- `https://github.com/GuGu927/Damda-pad` 주소 입력, Category에 `integration` 선택 후, 저장
+- `https://github.com/GuGu927/DAM-Pad` 주소 입력, Category에 `integration` 선택 후, 저장
 - HACS > Integretions 메뉴에서 우측 하단 + 누르고 `SKA 월패드` 검색하여 설치
 - HomeAssistant 재시작
 
 ### Manaul
 
-- `https://github.com/GuGu927/Damda-pad`에서 `custom_components` 폴더를 다운로드, 내부의 `damda_pad` 폴더 확인
+- `https://github.com/GuGu927/DAM-Pad`에서 `custom_components` 폴더를 다운로드, 내부의 `damda_pad` 폴더 확인
 - HomeAssistant 설정폴더인 `/config` 에 `custom_components` 폴더를 생성(이미 있으면 다음 단계)
 - `/config/custom_components`에 위에서 다운받은 `damda_pad` 폴더를 넣기
 - HomeAssistant 재시작
