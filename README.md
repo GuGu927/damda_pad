@@ -1,11 +1,9 @@
-# Wallpad by SKA [SmartKoreAssistant][skorea_link]
+# Damda PAD [KoreAssistant][ka_link]
 
 ![version](https://img.shields.io/badge/version-1.0-blue)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 
-CustomComponent for Wallpad.<br>
-한국의 아파트 홈넷 네트워크(RS485)의 통합연동 및 호환을 위한 위한 프로그램.<br>
-우리집 월패드가 어디껀지 몰라도 알아서 다~~~ 합니다.<br>
+DamdaPad<br>
 
 ## 준비물
 
@@ -14,8 +12,8 @@ CustomComponent for Wallpad.<br>
 
 ## 주의사항
 
-- 월패드의 모든 기능을 이용하려면 각 월패드 업체의 정식 서비스를 이용하시기 바랍니다.
-- 본 Component는 각 월패드 업체의 정식 서비스를 이용하지 못하는 사용자에 한해 개인적인 용도로만 사용하기를 권장합니다.
+- 장치의 모든 기능을 이용하려면 제조사의 정식 서비스를 이용하시기 바랍니다.
+- 본 Component는 제조사의 정식 서비스를 이용하지 못하는 사용자에 한해 개인적인 용도로만 사용하기를 권장합니다.
 - 본 Component의 사용책임은 전적으로 사용자에게 있습니다.
 - 본 Component의 상업적 이용을 하용하지 않습니다.
 - 본 Component의 무단배포를 허용하지 않습니다.
@@ -37,15 +35,15 @@ CustomComponent for Wallpad.<br>
 ### HACS
 
 - HACS > Integretions > 우측상단 메뉴 > `Custom repositories` 선택
-- `https://github.com/GuGu927/SKA-Wallpad` 주소 입력, Category에 `integration` 선택 후, 저장
+- `https://github.com/GuGu927/Damda-pad` 주소 입력, Category에 `integration` 선택 후, 저장
 - HACS > Integretions 메뉴에서 우측 하단 + 누르고 `SKA 월패드` 검색하여 설치
 - HomeAssistant 재시작
 
 ### Manaul
 
-- `https://github.com/GuGu927/SKA-Wallpad`에서 `custom_components` 폴더를 다운로드, 내부의 `skorea_wallpad` 폴더 확인
+- `https://github.com/GuGu927/Damda-pad`에서 `custom_components` 폴더를 다운로드, 내부의 `damda_pad` 폴더 확인
 - HomeAssistant 설정폴더인 `/config` 에 `custom_components` 폴더를 생성(이미 있으면 다음 단계)
-- `/config/custom_components`에 위에서 다운받은 `skorea_wallpad` 폴더를 넣기
+- `/config/custom_components`에 위에서 다운받은 `damda_pad` 폴더를 넣기
 - HomeAssistant 재시작
 
 <br>
@@ -53,16 +51,25 @@ CustomComponent for Wallpad.<br>
 ### 통합구성요소
 
 - HA 사이드패널 > 설정 > 통합 구성요소 > 통합 구성요소 추가
-- 검색창에서 `ska wallpad` 입력 후 클릭
+- 검색창에서 `Damda Pad` 입력 후 클릭
 - 소켓통신의 경우 `IP 주소`, `포트`를 입력 후 확인
 - 씨리얼통신의 경우 씨리얼포트 주소 (ex: `/dev/ttyUSB0`) 입력 후 확인
 
 <br>
 
-### 월패드 설정방법
+### 설정방법
+
+- **삼성전자**
+  - 시스템에어컨 > 자동인식
+
+<br>
+
+- **그렉스**
+  - 환기장치 > 자동인식
+
+<br>
 
 - **코콤** > 월패드에서 조회 혹은 조작하기
-
   - 난방 > 상태조회
   - 조명, 대기전력차단 > On/Off 제어
   - 가스차단 > 조회
@@ -73,7 +80,6 @@ CustomComponent for Wallpad.<br>
 <br>
 
 - **코맥스** > 월패드 자동인식
-
   - 난방 > 자동인식(패킷 자동추출을 위한 월패드에서 On/Off 제어가 필요할 수 있음.)
   - 조명, 대기전력차단 > 자동인식
   - 가스차단 > 자동인식
@@ -83,7 +89,6 @@ CustomComponent for Wallpad.<br>
 <br>
 
 - **현대통신** > 월패드에서 조회 혹은 조작하기
-
   - 난방 > 자동인식
   - 조명, 대기전력차단 > 자동인식
   - 가스차단 > 자동인식
@@ -94,32 +99,50 @@ CustomComponent for Wallpad.<br>
 
 <br>
 
-### 현재 가능한 월패드(최신버전 기준)
-
-|  월패드  | Version |    Date    |
-| :------: | :-----: | :--------: |
-|   코콤   |  v1.0   | 2021.02.xx |
-|  코맥스  |  v1.0   | 2021.02.xx |
-| 현대통신 |  v1.0   | 2021.02.xx |
+- **경동원** > 월패드에서 조회 혹은 조작하기
+  - 난방 > 상태조회 혹은 조작
+  - 조명 > 자동인식
+  - 가스차단 > 자동인식
+  - 엘레베이터 > 스위치 강제생성
+  - 일괄스위치 -> 자동인식(가스차단 상태조회만 가능.)
+  - 원격검침 -> 자동인식
 
 <br>
 
-### 지원 예정 월패드
+### 현재 가능한 제조사(최신버전 기준)
 
-- 삼성SDS
-- CVNET
-- 이지빌
-- 경동
+|  제조사  | Version |    Date    |
+| :------: | :-----: | :--------: |
+| 삼성전자 |  v1.0   | 2021.02.xx |
+|  그렉스  |  v1.0   | 2021.02.xx |
+|   코콤   |  v1.0   | 2021.02.xx |
+|  코맥스  |  v1.0   | 2021.02.xx |
+| 현대통신 |  v1.0   | 2021.02.xx |
+|  경동원  |  v1.0   | 2021.02.xx |
+
+<br>
+
+### 지원 예정 제조사
+
+- 삼성SDS(월패드)
+- CVNET(월패드)
+- 이지빌(월패드)
 
 <br>
 
 ## Component 기능
 
-|  월패드  | 자동인식 | 상태조회 | 조명 | 난방 | 콘센트 | E/V호출 | 가스차단 | 일괄소등 | 방범모드 | 현관모션 | 원격검침 |
-| :------: | :------: | :------: | :--: | :--: | :----: | :-----: | :------: | :------: | :------: | :------: | :------: |
-|   코콤   |    O     |    O     |  O   |  O   |   O    |    O    |    O     |    O     |    X     |    O     |    X     |
-|  코맥스  |    O     |    O     |  O   |  O   |   O    |    O    |    O     |    O     |    X     |    X     |    X     |
-| 현대통신 |    O     |    O     |  O   |  O   |   O    |    O    |    O     |    O     |    O     |    X     |    O     |
+|  제조사  | 지원제품             | 기능                                             |
+| :------: | :------------------- | :----------------------------------------------- |
+| 삼성전자 | 시스템에어컨         | 상태조회, 모드제어, 온도제어, 풍향제어, 풍속제어 |
+|  그렉스  | 환기장치(전열교환기) | 상태조회, 풍속제어                               |
+
+|  제조사  | 자동인식 | 상태조회 | 조명 | 난방 | 에어컨 | 콘센트 | 환기 | E/V호출 | 가스차단 | 일괄소등 | 방범모드 | 현관모션 | 원격검침 |
+| :------: | :------: | :------: | :--: | :--: | :----: | :----: | :--: | :-----: | :------: | :------: | :------: | :------: | :------: |
+|   코콤   |    O     |    O     |  O   |  O   |   X    |   O    |  O   |    O    |    O     |    O     |    X     |    O     |    X     |
+|  코맥스  |    O     |    O     |  O   |  O   |   X    |   O    |  O   |    O    |    O     |    O     |    X     |    X     |    X     |
+| 현대통신 |    O     |    O     |  O   |  O   |   O    |   O    |  O   |    O    |    O     |    O     |    O     |    X     |    O     |
+|  경동원  |    O     |    O     |  O   |  O   |   X    |   X    |  X   |    X    |    O     |    O     |    X     |    X     |    O     |
 
 ## 오류발생 시 debug 정보 출력방법
 
@@ -129,7 +152,7 @@ CustomComponent for Wallpad.<br>
 logger:
   default: info
   logs:
-    custom_components.skorea_wallpad: debug
+    custom_components.damda_pad: debug
 ```
 
-[skorea_link]: https://cafe.naver.com/koreassistant
+[ka_link]: https://cafe.naver.com/koreassistant
