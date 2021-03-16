@@ -1,5 +1,5 @@
 {
-  "name": "[KR] SKA 월패드",
+  "name": "[KR] Damda Pad",
   "country": "KR",
   "domains": ["sensor","binary_sensor","switch","light","climate","fan"],
   "render_readme": true
