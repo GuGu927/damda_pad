@@ -23,13 +23,13 @@
 
 ## 담다 패드가 도움이 되셨나요?
 
-![donation_kakao]<a href="https://qr.kakaopay.com/281006011000098177846177" target="_blank"><img src="https://github.com/GuGu927/DAM-Pad/blob/main/images/kakao.png" alt="KaKao"></a>
+<a href="https://qr.kakaopay.com/281006011000098177846177" target="_blank"><img src="https://github.com/GuGu927/DAM-Pad/blob/main/images/kakao.png" alt="KaKao"></a>
 
-![donation_kakao_link]카카오페이 : https://qr.kakaopay.com/281006011000098177846177
+카카오페이 : https://qr.kakaopay.com/281006011000098177846177
 
-![donation_paypal]<a href="https://paypal.me/rangee927" target="_blank"><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_150x38.png" alt="PayPal"></a>
+<a href="https://paypal.me/rangee927" target="_blank"><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_150x38.png" alt="PayPal"></a>
 
-![donation_buymeacoffe]<a href="https://www.buymeacoffee.com/rangee" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/white_img.png" alt="Buy Me A Coffee"></a>
+<a href="https://www.buymeacoffee.com/rangee" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/white_img.png" alt="Buy Me A Coffee"></a>
 
 
 
@@ -94,7 +94,7 @@
 - 검색창에서 `담다 패드` 입력 후 선택  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/integration_search.png)
 - 소켓통신의 경우 `IP 주소`, `포트`를 입력 후 확인
 - 씨리얼통신의 경우 씨리얼포트 주소 (ex: `/dev/ttyUSB0`) 입력 후 확인  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_config.png)
-- 설치 완료!  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_config_ok.png)
+- 설치 완료  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_config_ok.png)
 - 만약 자동등록이 되지 않는 경우 담다패드의 `옵션`을 누르고 제조사 선택 후 확인  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_select_model.png)
 - 그 다음 담다패드의 `---`을 누르고 `다시 읽어오기`를 누르면 자동등록 진행  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_reload.png)
 
