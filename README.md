@@ -23,7 +23,7 @@
 
 ## 담다 패드가 도움이 되셨나요?
 
-<a href="https://qr.kakaopay.com/281006011000098177846177" target="_blank"><img src="https://github.com/GuGu927/DAM-Pad/images/kakao.png" alt="KaKao" />
+<a href="https://qr.kakaopay.com/281006011000098177846177" target="_blank"><img src="https://github.com/GuGu927/DAM-Pad/blob/main/images/kakao.png" alt="KaKao" />
 
 카카오페이 : https://qr.kakaopay.com/281006011000098177846177
 
