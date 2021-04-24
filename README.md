@@ -80,8 +80,8 @@
 ### 수동설치
 
 - `담다 자료실`게시판에서 `custom_components` 파일을 다운로드, 내부의 `damda_pad` 폴더 확인
-- HomeAssistant 설정폴더인 `/config` 내부에 `custom_components` 폴더를 생성(이미 있으면 다음 단계)<br/>설정폴더는 `configuration.yaml` 파일이 있는 폴더를 의미합니다.  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/folder_config.png)
-- `/config/custom_components`에 위에서 다운받은 `damda_pad` 폴더를 넣기  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/folder_custom_component.png)
+- HomeAssistant 설정폴더인 `/config` 내부에 `custom_components` 폴더를 생성(이미 있으면 다음 단계)<br/>설정폴더는 `configuration.yaml` 파일이 있는 폴더를 의미합니다.<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/folder_config.png)
+- `/config/custom_components`에 위에서 다운받은 `damda_pad` 폴더를 넣기<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/folder_custom_component.png)
 - HomeAssistant 재시작
 
 <br/>
@@ -90,13 +90,13 @@
 
 ### 통합구성요소
 
-- HomeAssistant 사이드패널 > 설정 > 통합 구성요소 > 통합 구성요소 추가  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/menu.png)  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/configure.png)  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/integration_add.png)
-- 검색창에서 `담다 패드` 입력 후 선택  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/integration_search.png)
+- HomeAssistant 사이드패널 > 설정 > 통합 구성요소 > 통합 구성요소 추가<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/menu.png)<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/configure.png)<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/integration_add.png)
+- 검색창에서 `담다 패드` 입력 후 선택<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/integration_search.png)
 - 소켓통신의 경우 `IP 주소`, `포트`를 입력 후 확인
-- 씨리얼통신의 경우 씨리얼포트 주소 (ex: `/dev/ttyUSB0`) 입력 후 확인  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_config.png)
-- 설치 완료  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_config_ok.png)
-- 만약 자동등록이 되지 않는 경우 담다패드의 `옵션`을 누르고 제조사 선택 후 확인  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_select_model.png)
-- 그 다음 담다패드의 `---`을 누르고 `다시 읽어오기`를 누르면 자동등록 진행  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_reload.png)
+- 씨리얼통신의 경우 씨리얼포트 주소 (ex: `/dev/ttyUSB0`) 입력 후 확인<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_config.png)
+- 설치 완료!<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_config_ok.png)
+- 만약 자동등록이 되지 않는 경우 담다패드의 `옵션`을 누르고 제조사 선택 후 확인<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_select_model.png)
+- 그 다음 담다패드의 `---`을 누르고 `다시 읽어오기`를 누르면 자동등록 진행<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_reload.png)
 
 <br/>
 
