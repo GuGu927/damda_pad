@@ -95,7 +95,7 @@
 - 소켓통신의 경우 `IP 주소`, `포트`를 입력 후 확인
 - 씨리얼통신의 경우 씨리얼포트 주소 (ex: `/dev/ttyUSB0`) 입력 후 확인<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_config.png)
 - 설치 완료!<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_config_ok.png)
-- 만약 자동등록이 되지 않는 경우 담다패드의 `옵션`을 누르고 제조사 선택 후 확인<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_select_model.png)
+- 만약 자동등록이 되지 않는 경우 담다패드의 `옵션`을 누르고 제조사 선택 후 확인<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_integration_option.png)<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_select_model.png)
 - 그 다음 담다패드의 `---`을 누르고 `다시 읽어오기`를 누르면 자동등록 진행<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_reload.png)
 
 <br/>
