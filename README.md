@@ -23,13 +23,13 @@
 
 ## 담다 패드가 도움이 되셨나요?
 
-<a href="https://qr.kakaopay.com/281006011000098177846177" target="_blank"><img src="https://github.com/GuGu927/DAM-Pad/blob/main/images/kakao.png" alt="KaKao"></a>
+![donation_kakao]<a href="https://qr.kakaopay.com/281006011000098177846177" target="_blank"><img src="https://github.com/GuGu927/DAM-Pad/blob/main/images/kakao.png" alt="KaKao"></a>
 
-카카오페이 : https://qr.kakaopay.com/281006011000098177846177
+![donation_kakao_link]카카오페이 : https://qr.kakaopay.com/281006011000098177846177
 
-<a href="https://paypal.me/rangee927" target="_blank"><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_150x38.png" alt="PayPal"></a>
+![donation_paypal]<a href="https://paypal.me/rangee927" target="_blank"><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_150x38.png" alt="PayPal"></a>
 
-<a href="https://www.buymeacoffee.com/rangee" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/white_img.png" alt="Buy Me A Coffee"></a>
+![donation_buymeacoffe]<a href="https://www.buymeacoffee.com/rangee" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/white_img.png" alt="Buy Me A Coffee"></a>
 
 
 
@@ -80,8 +80,8 @@
 ### 수동설치
 
 - `담다 자료실`게시판에서 `custom_components` 파일을 다운로드, 내부의 `damda_pad` 폴더 확인
-- HomeAssistant 설정폴더인 `/config` 내부에 `custom_components` 폴더를 생성(이미 있으면 다음 단계)<br/>설정폴더는 `configuration.yaml` 파일이 있는 폴더를 의미합니다.
-- `/config/custom_components`에 위에서 다운받은 `damda_pad` 폴더를 넣기
+- HomeAssistant 설정폴더인 `/config` 내부에 `custom_components` 폴더를 생성(이미 있으면 다음 단계)<br/>설정폴더는 `configuration.yaml` 파일이 있는 폴더를 의미합니다.  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/folder_config.png)
+- `/config/custom_components`에 위에서 다운받은 `damda_pad` 폴더를 넣기  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/folder_custom_component.png)
 - HomeAssistant 재시작
 
 <br/>
@@ -90,13 +90,13 @@
 
 ### 통합구성요소
 
-- HomeAssistant 사이드패널 > 설정 > 통합 구성요소 > 통합 구성요소 추가
-- 검색창에서 `담다 패드` 입력 후 선택
+- HomeAssistant 사이드패널 > 설정 > 통합 구성요소 > 통합 구성요소 추가  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/menu.png)  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/configure.png)  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/integration_add.png)
+- 검색창에서 `담다 패드` 입력 후 선택  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/integration_search.png)
 - 소켓통신의 경우 `IP 주소`, `포트`를 입력 후 확인
-- 씨리얼통신의 경우 씨리얼포트 주소 (ex: `/dev/ttyUSB0`) 입력 후 확인
-- 설치 완료!
-- 만약 자동등록이 되지 않는 경우 담다패드의 `옵션`을 누르고 제조사 선택 후 확인
-- 그 다음 담다패드의 `---`을 누르고 `다시 읽어오기`를 누르면 자동등록 진행
+- 씨리얼통신의 경우 씨리얼포트 주소 (ex: `/dev/ttyUSB0`) 입력 후 확인  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_config.png)
+- 설치 완료!  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_config_ok.png)
+- 만약 자동등록이 되지 않는 경우 담다패드의 `옵션`을 누르고 제조사 선택 후 확인  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_select_model.png)
+- 그 다음 담다패드의 `---`을 누르고 `다시 읽어오기`를 누르면 자동등록 진행  ![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_reload.png)
 
 <br/>
 
@@ -133,7 +133,7 @@
 |-------|:--:|:--:|:---:|:--:|:---:|:---:|:----:|:-----:|:----:|:----:|:-----:|:----:|:---:|
 | 코콤    | O  | X  |  O  | O  |  O  |  X  |  O   |   O   |  O   |  O   |   X   |  X   |  X  |
 | 코맥스   | O  | X  |  O  | O  |  O  |  X  |  O   |   O   |  O   |  X   |   X   |  X   |  X  |
-| 현대통신  | O  | X  |  O  | O  |  O  |  O  |  O   |   O   |  X   |  X   |   O   |  O   |  X  |
+| 현대통신  | O  | O  |  O  | O  |  O  |  O  |  O   |   O   |  X   |  X   |   O   |  O   |  X  |
 | 경동원   | O  | X  |  O  | O  |  O  |  X  |  O   |   O   |  X   |  X   |   O   |  O   |  X  |
 | 이지빌   | O  | X  |  O  | X  |  O  |  X  |  O   |   O   |  X   |  X   |   O   |  O   |  X  |
 | CVnet | O  | O  |  O  | O  |  O  |  △  |  O   |   O   |  X   |  X   |   O   |  O   |  X  |
