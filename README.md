@@ -2,6 +2,8 @@
 
 ![version](https://img.shields.io/badge/version-1.0-blue)
 
+![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/logo.png)
+
 - [버전 기록정보](#version-history)
 - [주의사항](#주의사항)
 - [준비물](#준비물)
@@ -137,7 +139,7 @@
 | 경동원   | O  | X  |  O  | O  |  O  |  X  |  O   |   O   |  X   |  X   |   O   |  O   |  X  |
 | 이지빌   | O  | X  |  O  | X  |  O  |  X  |  O   |   O   |  X   |  X   |   O   |  O   |  X  |
 | CVnet | O  | O  |  O  | O  |  O  |  △  |  O   |   O   |  X   |  X   |   O   |  O   |  X  |
-| 삼성SDS | O  | X  |  O  | O  |  O  |  X  |  O   |   △   |  X   |  X   |   O   |  O   |  X  |
+| 삼성SDS | O  | X  |  O  | O  |  O  |  X  |  O   |   △   |  X   |  X   |   O   |  O   |  △  |
 
 <br/>
 
@@ -205,7 +207,7 @@
 
 - **CVnet** > 월패드에서 조회 혹은 조작하기`(자동인식이 안되면 월패드에서 제어해보세요)`
   - 조명, 대기전력차단 > On/Off 제어
-  - 디밍조명 -> 자동인식
+  - 디밍조명 -> On/Off 제어
   - 난방 > 자동인식
   - 에어컨 > 자동인식`(테스트 필요)`
   - 가스차단 > 자동인식
