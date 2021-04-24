@@ -49,7 +49,7 @@
 - 본 프로그램의 상업적 이용을 하용하지 않습니다.
 - 본 프로그램의 무단배포를 허용하지 않습니다.
 - 본문의 내용을 참조할 시 출처를 명시해야합니다.
-- 처음 사용 시 장치별로 1회 제어하고 장치의 제어가 정상적으로 이루어지지 않을 경우<br/>사용을 즉시 중단하고 `[담다 문의](https://cafe.naver.com/ArticleList.nhn?search.clubid=29860180&search.menuid=89&search.boardtype=L)` 게시판에 글을 남겨주세요.
+- 처음 사용 시 장치별로 1회 제어하고 장치의 제어가 정상적으로 이루어지지 않을 경우<br/>사용을 즉시 중단하고 [담다 문의](https://cafe.naver.com/ArticleList.nhn?search.clubid=29860180&search.menuid=89&search.boardtype=L) 게시판에 글을 남겨주세요.
 - 글 작성양식에 맞춰서 작성하고 로그를 같이 첨부해주세요.
 - [오류발생 시 debug 정보 출력방법](#오류발생-시-debug-정보-출력방법)
 - 특허출원번호 `10-2021-0034748`
