@@ -67,7 +67,7 @@
 
 ## 사용자 구성요소를 HA에 설치하는 방법
 
-### HACS(클로즈베타 미지원)
+### HACS(클로즈베타 미지원, 신청자에 한해 개별연락)
 
 - HACS > Integrations > 우측상단 메뉴 > `Custom repositories` 선택
 - `Add custom repository URL`에 `https://github.com/GuGu927/damda_pad` 입력
@@ -77,7 +77,7 @@
 
 <br/>
 
-### 수동설치
+### 수동설치(클로즈베타 미지원, 신청자에 한해 개별연락)
 
 - `https://github.com/GuGu927/damda_pad` 페이지에서 `Code/Download ZIP` 을 눌러 파일을 다운로드, 내부의 `damda_pad` 폴더 확인
 - HomeAssistant 설정폴더인 `/config` 내부에 `custom_components` 폴더를 생성(이미 있으면 다음 단계)<br/>설정폴더는 `configuration.yaml` 파일이 있는 폴더를 의미합니다.<br>![manual_sidebar](https://github.com/GuGu927/damda_pad/blob/main/images/folder_config.png)
