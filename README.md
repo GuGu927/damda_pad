@@ -2,7 +2,7 @@
 
 ![version](https://img.shields.io/badge/version-1.0-blue)
 
-![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/logo.png)
+![manual_sidebar](https://github.com/GuGu927/damda_pad/blob/main/images/logo.png)
 
 - [버전 기록정보](#version-history)
 - [주의사항](#주의사항)
@@ -25,7 +25,7 @@
 
 ## 담다 패드가 도움이 되셨나요?
 
-<a href="https://qr.kakaopay.com/281006011000098177846177" target="_blank"><img src="https://github.com/GuGu927/DAM-Pad/blob/main/images/kakao.png" alt="KaKao"></a>
+<a href="https://qr.kakaopay.com/281006011000098177846177" target="_blank"><img src="https://github.com/GuGu927/damda_pad/blob/main/images/kakao.png" alt="KaKao"></a>
 
 카카오페이 : https://qr.kakaopay.com/281006011000098177846177
 
@@ -59,7 +59,7 @@
 
 ## 준비물
 
-- HomeAssistant `최신버전`(**2021.3.4 이상**)
+- HomeAssistant `최신버전`(**2021.9.0 이상**)
 - HomeAssistant OS, Core, Container 등 아무런 상관이 없습니다.
 - 무선 `Elfin EW11 혹은 TCP/IP 소켓통신이 되는 제품` 혹은 유선 `USB to RS485 컨버터` 등
 
@@ -70,7 +70,7 @@
 ### HACS(클로즈베타 미지원)
 
 - HACS > Integrations > 우측상단 메뉴 > `Custom repositories` 선택
-- `Add custom repository URL`에 `https://github.com/GuGu927/DAM-Pad` 입력
+- `Add custom repository URL`에 `https://github.com/GuGu927/damda_pad` 입력
 - Category는 `Integration` 선택 후 `ADD` 클릭
 - HACS > Integrations 에서 `Damda Pad` 찾아서 설치
 - HomeAssistant 재시작
@@ -79,9 +79,9 @@
 
 ### 수동설치
 
-- `담다 자료실`게시판에서 `custom_components` 파일을 다운로드, 내부의 `damda_pad` 폴더 확인
-- HomeAssistant 설정폴더인 `/config` 내부에 `custom_components` 폴더를 생성(이미 있으면 다음 단계)<br/>설정폴더는 `configuration.yaml` 파일이 있는 폴더를 의미합니다.<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/folder_config.png)
-- `/config/custom_components`에 위에서 다운받은 `damda_pad` 폴더를 넣기<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/folder_custom_component.png)
+- `https://github.com/GuGu927/damda_pad` 페이지에서 `Code/Download ZIP` 을 눌러 파일을 다운로드, 내부의 `damda_pad` 폴더 확인
+- HomeAssistant 설정폴더인 `/config` 내부에 `custom_components` 폴더를 생성(이미 있으면 다음 단계)<br/>설정폴더는 `configuration.yaml` 파일이 있는 폴더를 의미합니다.<br>![manual_sidebar](https://github.com/GuGu927/damda_pad/blob/main/images/folder_config.png)
+- `/config/custom_components`에 위에서 다운받은 `damda_pad` 폴더를 넣기<br>![manual_sidebar](https://github.com/GuGu927/damda_pad/blob/main/images/folder_custom_component.png)
 - HomeAssistant 재시작
 
 <br/>
@@ -90,13 +90,13 @@
 
 ### 통합구성요소
 
-- HomeAssistant 사이드패널 > 설정 > 통합 구성요소 > 통합 구성요소 추가<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/menu.png)<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/configure.png)<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/integration_add.png)
-- 검색창에서 `담다 패드` 입력 후 선택<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/integration_search.png)
+- HomeAssistant 사이드패널 > 설정 > 통합 구성요소 > 통합 구성요소 추가<br>![manual_sidebar](https://github.com/GuGu927/damda_pad/blob/main/images/menu.png)<br>![manual_sidebar](https://github.com/GuGu927/damda_pad/blob/main/images/configure.png)<br>![manual_sidebar](https://github.com/GuGu927/damda_pad/blob/main/images/integration_add.png)
+- 검색창에서 `담다 패드` 입력 후 선택<br>![manual_sidebar](https://github.com/GuGu927/damda_pad/blob/main/images/integration_search.png)
 - 소켓통신의 경우 `IP 주소`, `포트`를 입력 후 확인
-- 씨리얼통신의 경우 씨리얼포트 주소 (ex: `/dev/ttyUSB0`) 입력 후 확인<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_config.png)
-- 설치 완료!<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_config_ok.png)
-- 만약 자동등록이 되지 않는 경우 담다패드의 `옵션`을 누르고 제조사 선택 후 확인<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_integration_option.png)<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_select_model.png)
-- 그 다음 담다패드의 `---`을 누르고 `다시 읽어오기`를 누르면 자동등록 진행<br>![manual_sidebar](https://github.com/GuGu927/DAM-Pad/blob/main/images/damda_reload.png)
+- 씨리얼통신의 경우 씨리얼포트 주소 (ex: `/dev/ttyUSB0`) 입력 후 확인<br>![manual_sidebar](https://github.com/GuGu927/damda_pad/blob/main/images/damda_config.png)
+- 설치 완료!<br>![manual_sidebar](https://github.com/GuGu927/damda_pad/blob/main/images/damda_config_ok.png)
+- 만약 자동등록이 되지 않는 경우 담다패드의 `옵션`을 누르고 제조사 선택 후 확인<br>![manual_sidebar](https://github.com/GuGu927/damda_pad/blob/main/images/damda_integration_option.png)<br>![manual_sidebar](https://github.com/GuGu927/damda_pad/blob/main/images/damda_select_model.png)
+- 그 다음 담다패드의 `---`을 누르고 `다시 읽어오기`를 누르면 자동등록 진행<br>![manual_sidebar](https://github.com/GuGu927/damda_pad/blob/main/images/damda_reload.png)
 
 <br/>
 
@@ -144,7 +144,7 @@
 | 홈넷홈   |  O   |  X   |   O    |  X   |  O   |   O    |   X    |    O     |    O    |    X     |    X     |     O      |    O     | X      |
 | 이지빌   |  O   |  X   |   O    |  X   |  O   |   O    |   X    |    O     |    O    |    O     |    X     |     O      |    O     | X      |
 | CVnet    |  O   |  O   |   O    |  X   |  O   |   O    |   △    |    O     |    O    |    X     |    X     |     O      |    O     | X      |
-| 삼성SDS  |  O   |  X   |   O    |  X   |  O   |   O    |   X    |    O     |    △    |    X     |    X     |     O      |    O     | △      |
+| 삼성SDS  |  O   |  X   |   O    |  X   |  O   |   O    |   X    |    O     |    O    |    X     |    X     |     O      |    O     | △      |
 | TEC&CO   |  O   |  O   |   X    |  O   |  O   |   O    |   X    |    O     |    X    |    X     |    X     |     X      |    X     | X      |
 
 <br/>
@@ -174,13 +174,13 @@
   - 디밍조명 > 단계별로 제어(0,1,2,3 ...)
   - 난방 > 상태조회
   - 에어컨 > 상태조회
-  - 가스차단 > 조회
+  - 가스차단 > 상태조회
   - 환기장치 > 상태조회 혹은 제어
   - 엘레베이터 > 자동등록`(미작동시 사용금지)`
   - 현관모션감지 > 현관 앞에서 움직임
   - 일괄소등 > On/Off 제어
 
-- **코맥스** > 월패드에서 조회 혹은 조작하기`(자동인식이 안되면 월패드에서 제어해보세요)`
+- **코맥스** > 자동인식`(자동인식이 안되면 월패드에서 조회/제어해보세요)`
 
   - 조명, 대기전력차단 > 자동인식
   - 난방 > 자동인식(추가로 월패드에서 난방/외출 제어가 필요)
@@ -189,7 +189,7 @@
   - 엘레베이터 > 자동등록`(미작동시 사용금지)`
   - 일괄스위치 > 자동인식(일괄소등, 가스차단, 방범모드 등 `상태조회만 가능`)
 
-- **현대통신** > 월패드에서 조회 혹은 조작하기`(자동인식이 안되면 월패드에서 제어해보세요)`
+- **현대통신** > 자동인식`(자동인식이 안되면 월패드에서 조회/제어해보세요)`
 
   - 조명, 대기전력차단 > 자동인식
   - 디밍조명 > 자동인식
@@ -200,7 +200,7 @@
   - 일괄스위치 > 자동인식(일괄소등, 가스차단, 방범모드 등 `상태조회만 가능`)
   - 원격검침 > 상태조회 혹은 자동인식
 
-- **경동원** > 월패드에서 조회 혹은 조작하기`(자동인식이 안되면 월패드에서 제어해보세요)`
+- **경동원** > 자동인식`(자동인식이 안되면 월패드에서 조회/제어해보세요)`
 
   - 조명, 대기전력차단 > 자동인식
   - 난방 > 상태조회 혹은 조작
@@ -211,7 +211,7 @@
   - 일괄스위치 > 자동인식(가스차단 등 `상태조회만 가능`)
   - 원격검침 > 상태조회 혹은 자동인식
 
-- **이지빌** > 월패드에서 조회 혹은 조작하기`(자동인식이 안되면 월패드에서 제어해보세요)`
+- **이지빌** > 자동인식`(자동인식이 안되면 월패드에서 조회/제어해보세요)`
 
   - 조명, 대기전력차단 > 자동인식
   - 난방 > 상태조회 혹은 조작
@@ -224,7 +224,7 @@
   - light_0_0 > 조명 일괄제어(일괄소등과 다름에 주의)
   - light_0_1 > 난방<>외출(ON시 외출상태, OFF시 난방상태)
 
-- **CVnet** > 월패드에서 조회 혹은 조작하기`(자동인식이 안되면 월패드에서 제어해보세요)`
+- **CVnet** > 자동인식`(자동인식이 안되면 월패드에서 조회/제어해보세요)`
 
   - 조명, 대기전력차단 > On/Off 제어
   - 디밍조명 > On/Off 제어
@@ -235,18 +235,18 @@
   - 엘레베이터 > 자동등록`(미작동시 사용금지)`
   - 일괄스위치 > 자동인식(가스밸브상태, 가스누출, 화재감지, 방범모드, 외출모드 등 `상태조회만 가능`)
 
-- **삼성SDS** > 월패드에서 조회 혹은 조작하기`(자동인식이 안되면 월패드에서 제어해보세요)`
+- **삼성SDS** > 자동인식`(자동인식이 안되면 월패드에서 조회/제어해보세요)`
 
   - 조명, 대기전력차단 > 자동인식
   - 난방 > 자동인식
   - 가스차단 > 자동인식
   - 환기장치 > 자동인식
-  - 엘레베이터 > 자동등록`(미작동시 사용금지)`
+  - 엘레베이터 > 자동등록, EW11의 경우 현관스위치 제거 후 작동하며 USB485의 경우 그냥 됩니다.`(미작동시 사용금지)`
   - 일괄스위치 > 자동인식(일괄소등, 가스차단, 방범모드 등 `상태조회만 가능`)
   - 인터폰 > 자동인식`(테스트 필요)`
   - 원격검침 > 상태조회 혹은 자동인식
 
-- **홈넷홈** > 월패드에서 조회 혹은 조작하기`(자동인식이 안되면 월패드에서 제어해보세요)`
+- **홈넷홈** > 옵션에서 홈넷홈 활성화, 자동인식`(자동인식이 안되면 월패드에서 조회/제어해보세요)`
 
   - 조명, 대기전력차단 > 자동인식
   - 난방 > 상태조회 혹은 조작
@@ -257,7 +257,7 @@
   - 일괄스위치 > 자동인식(가스차단 등 `상태조회만 가능`)
   - 원격검침 > 상태조회 혹은 자동인식
 
-- **TEC&CO** > 월패드에서 조회 혹은 조작하기`(자동인식이 안되면 월패드에서 제어해보세요)`
+- **TEC&CO** > 자동인식`(자동인식이 안되면 월패드에서 조회/제어해보세요)`
 
   - 조명 > 자동인식
   - 디밍조명 > 밝기 제어
@@ -268,6 +268,10 @@
   - light_0_0 > 난방 전원 일괄제어(1개 이상의 난방기기 켜짐 일 경우 on, 모든 난방기기가 꺼짐 일 경우 OFF.)
   - light_0_1 > 난방 외출 일괄제어(1개 이상의 난방기기 외출 일 경우 on, 모든 난방기기가 외출해제 일 경우 OFF.)
 
+- **삼성 시스템에어컨** > 자동인식
+- **LG MDDBUS 시스템에어컨** > 옵션에서 lgcacmodbus 선택
+- **LG PI485 시스템에어컨** > 옵션에서 lgcacpi485 선택
+- **그렉스/에어패스/정민/에이피/진성/시스클라인/경동에어원** > 자동인식
 - **기타** > 자동인식
 
 <br/>
