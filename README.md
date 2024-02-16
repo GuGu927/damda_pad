@@ -2,8 +2,6 @@
 
 ![version](https://img.shields.io/badge/version-1.0-blue)
 
-![manual_sidebar](https://github.com/GuGu927/damda_pad/blob/main/images/logo.png)
-
 - [버전 기록정보](#version-history)
 - [주의사항](#주의사항)
 - [준비물](#준비물)
